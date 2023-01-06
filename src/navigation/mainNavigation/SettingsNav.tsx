@@ -8,7 +8,11 @@ const Stack = createStackNavigator();
 
 const SettingsNav = () => (
   <Stack.Navigator initialRouteName="OrdersScreen">
-    <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+    <Stack.Screen
+      name="SettingsScreen"
+      component={SettingsScreen}
+      options={{headerShown: false}}
+    />
   </Stack.Navigator>
 );
 
