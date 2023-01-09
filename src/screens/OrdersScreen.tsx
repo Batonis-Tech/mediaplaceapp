@@ -1,5 +1,8 @@
-import React, {Dispatch, FunctionComponent, useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import React, {Dispatch, FunctionComponent} from 'react';
+import {View} from 'react-native';
+
+// components
+import {OrdersCard} from '../components/orders/OrdersCard';
 
 interface Props {
   dispatch: Dispatch<any>;
@@ -7,8 +10,8 @@ interface Props {
 
 const OrdersScreen: FunctionComponent<Props> = ({dispatch}) => {
   return (
-    <View style={{flex: 1}}>
-      <Text>OrdersScreen</Text>
+    <View style={{flex: 1, padding: 16}}>
+      <OrdersCard status="200" />
     </View>
   );
 };

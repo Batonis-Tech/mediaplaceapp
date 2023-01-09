@@ -15,6 +15,7 @@ export const Color = {
   secondary_900: '#2A3342',
 
   primary_050: '#FFE082',
+  primary_200: '#FFE082',
   primary_500: '#FFB300',
 
   warning_050: '#FFFAF3',

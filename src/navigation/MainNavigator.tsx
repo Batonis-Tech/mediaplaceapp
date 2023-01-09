@@ -1,14 +1,13 @@
 import React from 'react';
 
 // tabs
-import {OrdersNav} from './mainNavigation/OrdersNav';
-import {SettingsNav} from './mainNavigation/SettingsNav';
+import {OrdersNav, SettingsNav} from './mainNavigation';
 
 // styles
 import {Color, Fonts} from '../styles';
 
 // icons
-import {Icon} from '../components/Icon';
+import {Icon} from '../utils/Icon';
 import {Notes, Setting} from '../assets/IconSvg';
 
 // nav

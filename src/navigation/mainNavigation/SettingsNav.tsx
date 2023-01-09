@@ -6,7 +6,7 @@ import {SettingsScreen} from '../../screens';
 
 const Stack = createStackNavigator();
 
-const SettingsNav = () => (
+export const SettingsNav = () => (
   <Stack.Navigator initialRouteName="OrdersScreen">
     <Stack.Screen
       name="SettingsScreen"
@@ -15,5 +15,3 @@ const SettingsNav = () => (
     />
   </Stack.Navigator>
 );
-
-export {SettingsNav};

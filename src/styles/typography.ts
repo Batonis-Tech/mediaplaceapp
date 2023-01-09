@@ -1,6 +1,6 @@
 export const Fonts = {
-  semiBold: 'Gilroy- SemiBold',
+  semiBold: 'Gilroy-SemiBold',
   bold: 'Gilroy-Bold',
   medium: 'Gilroy-Medium',
-  regular: 'Gilroy- Regular',
+  regular: 'Gilroy-Regular',
 };
