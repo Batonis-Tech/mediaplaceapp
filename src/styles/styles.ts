@@ -50,17 +50,18 @@ export const styles = StyleSheet.create({
     size: 12,
     lineHeight: 16,
     letterSpacing: 0.35,
-    color: Color.secondary_900,
+    color: Color.secondary_600,
   },
   text_Caption2: {
     fontFamily: Fonts.regular,
     size: 11,
     lineHeight: 14,
     letterSpacing: 0.35,
-    color: Color.secondary_900,
+    color: Color.secondary_600,
   },
 
   // general
+  root: {flex: 1, paddingHorizontal: 16},
   row_container: {flexDirection: 'row', alignItems: 'center'},
   between_container: {
     width: '100%',

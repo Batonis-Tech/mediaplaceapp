@@ -1,16 +1,23 @@
 import React, {FunctionComponent} from 'react';
-import {Text, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 
 // styles
 import {Color, styles} from '../../styles';
 
+// helpers
+import {touchOpacity} from '../../helpers';
+
 interface Props {
   status: string;
+  onPress: () => void;
 }
 
 export const OrdersCard: FunctionComponent<Props> = props => {
   return (
-    <View style={styles.orderCard}>
+    <TouchableOpacity
+      style={styles.orderCard}
+      onPress={props.onPress}
+      activeOpacity={touchOpacity}>
       <Text style={[styles.text_Body2, {color: Color.danger_500}]}>
         Отклонен
       </Text>
@@ -24,24 +31,14 @@ export const OrdersCard: FunctionComponent<Props> = props => {
       </View>
 
       <View style={styles.between_container}>
-        <Text style={[styles.text_Caption1, {color: Color.secondary_600}]}>
-          Пресс-релиз
-        </Text>
+        <Text style={styles.text_Caption1}>Пресс-релиз</Text>
 
         <View style={styles.row_container}>
-          <Text
-            style={[
-              styles.text_Caption2,
-              {marginRight: 8, color: Color.secondary_600},
-            ]}>
-            12.04.22
-          </Text>
+          <Text style={[styles.text_Caption2, {marginRight: 8}]}>12.04.22</Text>
 
-          <Text style={[styles.text_Caption2, {color: Color.secondary_600}]}>
-            000003243
-          </Text>
+          <Text style={styles.text_Caption2}>000003243</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };

@@ -1,17 +1,34 @@
-import React, {Dispatch, FunctionComponent} from 'react';
-import {View} from 'react-native';
+import React, {Dispatch, FunctionComponent, useState} from 'react';
+import {TouchableOpacity, View} from 'react-native';
+
+// styles
+import {styles} from '../styles';
 
 // components
-import {OrdersCard} from '../components/orders/OrdersCard';
+import {OrdersCard} from '../components';
 
-interface Props {
-  dispatch: Dispatch<any>;
-}
+//
+import {SearchBar, Text} from 'react-native-elements';
 
-const OrdersScreen: FunctionComponent<Props> = ({dispatch}) => {
+interface Props {}
+
+const OrdersScreen: FunctionComponent<Props> = props => {
+  const [search, setSearch] = useState<string>('');
+
   return (
-    <View style={{flex: 1, padding: 16}}>
-      <OrdersCard status="200" />
+    <View style={styles.root}>
+      {/* <SearchBar
+        placeholder="Type Here..."
+        onChangeText={(text: string) => setSearch(text)}
+        value={search}
+        lightTheme={true}
+      /> */}
+      <OrdersCard
+        status="200"
+        onPress={() => {
+          props.navigation.navigate('OrderDetailsScreen');
+        }}
+      />
     </View>
   );
 };
