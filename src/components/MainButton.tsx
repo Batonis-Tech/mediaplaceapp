@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from 'react';
-import {Text, View, StyleProp, ViewStyle, TouchableOpacity} from 'react-native';
+import {Text, StyleProp, ViewStyle, TouchableOpacity} from 'react-native';
 
 // styles
 import {Color, styles} from '../styles';
@@ -10,15 +10,27 @@ import {touchOpacity} from '../helpers';
 interface Props {
   title: string;
   style?: StyleProp<ViewStyle>;
+  active?: boolean;
 }
 
 export const MainButton: FunctionComponent<Props> = props => {
+  const {settingCard, centerPosition, text_Button} = styles;
+
   return (
     <TouchableOpacity
-      style={[styles.settingCard, styles.centerPosition, props.style]}
+      style={[
+        settingCard,
+        centerPosition,
+        props.style,
+        {backgroundColor: props.active ? Color.primary_500 : Color.white},
+      ]}
       onPress={() => {}}
       activeOpacity={touchOpacity}>
-      <Text style={[styles.text_Button, {color: Color.primary_500}]}>
+      <Text
+        style={[
+          text_Button,
+          {color: props.active ? Color.white : Color.primary_500},
+        ]}>
         {props.title}
       </Text>
     </TouchableOpacity>

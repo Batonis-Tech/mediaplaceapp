@@ -34,9 +34,9 @@ export const AppNavigator = (props: any) => {
   return (
     <SafeAreaProvider style={{flex: 1}}>
       <NavigationContainer theme={MyTheme}>
-        <MainNavigator />
+        {/* <MainNavigator /> */}
 
-        {/* <AuthNavigator/> */}
+        <AuthNavigator />
       </NavigationContainer>
     </SafeAreaProvider>
   );

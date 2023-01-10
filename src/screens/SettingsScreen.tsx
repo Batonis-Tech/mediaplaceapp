@@ -1,6 +1,9 @@
 import React, {Dispatch, FunctionComponent, useState} from 'react';
 import {StatusBar, View} from 'react-native';
 
+// styles
+import {styles} from '../styles';
+
 // components
 import {MainButton, NotificationCard, AccountCard} from '../components';
 
@@ -11,13 +14,10 @@ interface Props {
 const SettingsScreen: FunctionComponent<Props> = ({dispatch}) => {
   const [activeSwitch, setActiveSwitch] = useState<boolean>(false);
 
+  const {root} = styles;
+
   return (
-    <View
-      style={{
-        flex: 1,
-        paddingTop: StatusBar.currentHeight + 16,
-        paddingHorizontal: 16,
-      }}>
+    <View style={[root, {paddingTop: StatusBar.currentHeight + 16}]}>
       <AccountCard />
 
       <NotificationCard

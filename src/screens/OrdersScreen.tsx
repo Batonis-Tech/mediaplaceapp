@@ -1,5 +1,5 @@
 import React, {Dispatch, FunctionComponent, useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {View} from 'react-native';
 
 // styles
 import {styles} from '../styles';
@@ -15,8 +15,10 @@ interface Props {}
 const OrdersScreen: FunctionComponent<Props> = props => {
   const [search, setSearch] = useState<string>('');
 
+  const {root} = styles;
+
   return (
-    <View style={styles.root}>
+    <View style={root}>
       {/* <SearchBar
         placeholder="Type Here..."
         onChangeText={(text: string) => setSearch(text)}

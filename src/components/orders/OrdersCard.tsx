@@ -13,30 +13,39 @@ interface Props {
 }
 
 export const OrdersCard: FunctionComponent<Props> = props => {
+  const {
+    orderCard,
+    between_container,
+    row_container,
+    //fonts
+    text_Caption1,
+    text_Caption2,
+    text_Body2,
+    text_Subtitle1,
+  } = styles;
+
   return (
     <TouchableOpacity
-      style={styles.orderCard}
+      style={orderCard}
       onPress={props.onPress}
       activeOpacity={touchOpacity}>
-      <Text style={[styles.text_Body2, {color: Color.danger_500}]}>
-        Отклонен
-      </Text>
+      <Text style={[text_Body2, {color: Color.danger_500}]}>Отклонен</Text>
 
-      <View style={[styles.between_container, {marginTop: 2}]}>
-        <Text style={[styles.text_Subtitle1, {marginRight: 16}]}>
+      <View style={[between_container, {marginTop: 2}]}>
+        <Text style={[text_Subtitle1, {marginRight: 16}]}>
           Интересные животные планеты Земля
         </Text>
 
-        <Text style={styles.text_Body2}>4 000 ₽</Text>
+        <Text style={text_Body2}>4 000 ₽</Text>
       </View>
 
-      <View style={styles.between_container}>
-        <Text style={styles.text_Caption1}>Пресс-релиз</Text>
+      <View style={between_container}>
+        <Text style={text_Caption1}>Пресс-релиз</Text>
 
-        <View style={styles.row_container}>
-          <Text style={[styles.text_Caption2, {marginRight: 8}]}>12.04.22</Text>
+        <View style={row_container}>
+          <Text style={[text_Caption2, {marginRight: 8}]}>12.04.22</Text>
 
-          <Text style={styles.text_Caption2}>000003243</Text>
+          <Text style={text_Caption2}>000003243</Text>
         </View>
       </View>
     </TouchableOpacity>

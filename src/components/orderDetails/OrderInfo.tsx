@@ -39,25 +39,32 @@ const Item = ({item, index}) => {
 };
 
 export const OrderInfo: FunctionComponent<Props> = props => {
+  const {
+    orderCard,
+    between_container,
+    //fonts
+    text_Caption1,
+    text_Body2,
+    text_Subtitle1,
+  } = styles;
+
   return (
-    <View style={styles.orderCard}>
-      <View style={styles.between_container}>
-        <Text style={styles.text_Caption1}>11.04.22</Text>
-        <Text style={styles.text_Caption1}>000003243</Text>
+    <View style={orderCard}>
+      <View style={between_container}>
+        <Text style={text_Caption1}>11.04.22</Text>
+        <Text style={text_Caption1}>000003243</Text>
       </View>
 
       <View style={{marginTop: 2}}>
-        <Text style={[styles.text_Body2, {color: Color.secondary_600}]}>
-          Оплачен
-        </Text>
-        <Text style={styles.text_Subtitle1}>Удивительный мир бабочек</Text>
+        <Text style={[text_Body2, {color: Color.secondary_600}]}>Оплачен</Text>
+        <Text style={text_Subtitle1}>Удивительный мир бабочек</Text>
 
-        <View style={styles.between_container}>
-          <Text style={[styles.text_Body2, {color: Color.secondary_600}]}>
+        <View style={between_container}>
+          <Text style={[text_Body2, {color: Color.secondary_600}]}>
             Тип публикации
           </Text>
 
-          <Text style={styles.text_Body2}>Статья</Text>
+          <Text style={text_Body2}>Статья</Text>
         </View>
       </View>
 

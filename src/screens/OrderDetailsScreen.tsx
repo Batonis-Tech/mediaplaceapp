@@ -15,8 +15,10 @@ interface Props {}
 const OrderDetailsScreen: FunctionComponent<Props> = props => {
   const [search, setSearch] = useState<string>('');
 
+  const {root} = styles;
+
   return (
-    <View style={styles.root}>
+    <View style={root}>
       <OrderInfo />
 
       <MainButton title="Отменить заказ" style={{marginTop: 16}} />

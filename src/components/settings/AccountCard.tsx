@@ -17,21 +17,28 @@ interface Props {
 }
 
 export const AccountCard: FunctionComponent<Props> = props => {
+  const {
+    settingCard,
+    row_container,
+    centerPosition,
+    accountIcon,
+    text_Subtitle1,
+    text_Body2,
+  } = styles;
+
   return (
-    <View style={[styles.settingCard, styles.row_container]}>
-      <View style={[styles.centerPosition, styles.accountIcon]}>
+    <View style={[settingCard, row_container]}>
+      <View style={[centerPosition, accountIcon]}>
         <Icon iconName={Newspaper} size={20} fill={Color.secondary_900} />
       </View>
 
       <View style={{marginLeft: 16}}>
-        <TouchableOpacity
-          style={styles.row_container}
-          activeOpacity={touchOpacity}>
-          <Text style={styles.text_Subtitle1}>Мария</Text>
+        <TouchableOpacity style={row_container} activeOpacity={touchOpacity}>
+          <Text style={text_Subtitle1}>Мария</Text>
           <Icon iconName={DownArrow} size={20} fill={Color.secondary_900} />
         </TouchableOpacity>
 
-        <Text style={[styles.text_Body2, {color: Color.secondary_600}]}>
+        <Text style={[text_Body2, {color: Color.secondary_600}]}>
           На счете
           <Text style={{color: Color.secondary_900}}> 5 000 ₽</Text>
         </Text>
