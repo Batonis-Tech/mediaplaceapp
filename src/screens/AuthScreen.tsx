@@ -1,6 +1,11 @@
 import React, {Dispatch, FunctionComponent} from 'react';
 import {View} from 'react-native';
 
+// redux
+import {useDispatch, useSelector} from 'react-redux';
+import {ReduxType} from '../models';
+import {login, fetchCustomers} from '../redux/actions';
+
 // styles
 import {styles} from '../styles';
 
@@ -14,8 +19,15 @@ interface Props {
   dispatch: Dispatch<any>;
 }
 
-export const AuthScreen: FunctionComponent<Props> = ({dispatch}) => {
+export const AuthScreen: FunctionComponent<Props> = () => {
+  const dispatch = useDispatch();
+
   const {root, centerPosition} = styles;
+
+  const Login = () => {
+    // dispatch(login(ReduxType.MAIN));
+    dispatch(fetchCustomers());
+  };
 
   return (
     <View style={[root, centerPosition]}>
@@ -35,7 +47,12 @@ export const AuthScreen: FunctionComponent<Props> = ({dispatch}) => {
         />
       </View>
 
-      <MainButton title="Войти" style={{marginTop: 24}} active={true} />
+      <MainButton
+        title="Войти"
+        style={{marginTop: 24}}
+        active={true}
+        onPress={() => Login()}
+      />
     </View>
   );
 };

@@ -1,6 +1,5 @@
 import React, {FunctionComponent} from 'react';
 import {SvgXml} from 'react-native-svg';
-import {Color} from '../styles';
 
 interface Props {
   iconName: string;
@@ -12,7 +11,6 @@ interface Props {
 }
 
 export const Icon: FunctionComponent<Props> = props => {
-  console.log(props.size, props.fill);
   return (
     <SvgXml
       xml={props.iconName}

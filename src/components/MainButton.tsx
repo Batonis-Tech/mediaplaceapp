@@ -11,6 +11,7 @@ interface Props {
   title: string;
   style?: StyleProp<ViewStyle>;
   active?: boolean;
+  onPress: () => void;
 }
 
 export const MainButton: FunctionComponent<Props> = props => {
@@ -24,7 +25,7 @@ export const MainButton: FunctionComponent<Props> = props => {
         props.style,
         {backgroundColor: props.active ? Color.primary_500 : Color.white},
       ]}
-      onPress={() => {}}
+      onPress={props.onPress}
       activeOpacity={touchOpacity}>
       <Text
         style={[

@@ -32,7 +32,7 @@ export const OrdersCard: FunctionComponent<Props> = props => {
       <Text style={[text_Body2, {color: Color.danger_500}]}>Отклонен</Text>
 
       <View style={[between_container, {marginTop: 2}]}>
-        <Text style={[text_Subtitle1, {marginRight: 16}]}>
+        <Text style={[text_Subtitle1, {marginRight: 16, flex: 1}]}>
           Интересные животные планеты Земля
         </Text>
 

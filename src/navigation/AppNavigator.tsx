@@ -1,5 +1,9 @@
 import React from 'react';
 
+// redux
+import {useSelector} from 'react-redux';
+import {ReduxType} from '../models';
+
 // navigators
 import {MainNavigator} from './MainNavigator';
 import {AuthNavigator} from './AuthNavigator';
@@ -25,18 +29,17 @@ const MyTheme: Theme = {
 };
 
 export const AppNavigator = (props: any) => {
-  //   const {
-  //     currentScreen: navigator,
-  //     loading,
-  //     parameters,
-  //   } = useSelector((state: AppState) => state.navigation);
+  const {currentScreen} = useSelector(state => state.navigation);
+
+  const state = useSelector(state => state);
+  console.log('state', state);
 
   return (
     <SafeAreaProvider style={{flex: 1}}>
       <NavigationContainer theme={MyTheme}>
-        {/* <MainNavigator /> */}
-
-        <AuthNavigator />
+        {currentScreen === ReduxType.AUTH && <AuthNavigator />}
+        {currentScreen === ReduxType.MAIN && <MainNavigator />}
+        {/* {currentScreen === 'SPLASH' && <MainNavigator />} */}
       </NavigationContainer>
     </SafeAreaProvider>
   );
