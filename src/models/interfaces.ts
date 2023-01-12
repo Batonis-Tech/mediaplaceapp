@@ -7,6 +7,9 @@ export interface Action {
 
 export interface AuthState {
   user: {};
+  orders: any;
+  access_token: string;
+  refresh_token: string;
 }
 
 export interface NavigatorState {

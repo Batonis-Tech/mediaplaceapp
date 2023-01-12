@@ -1,13 +1,10 @@
 import React, {Dispatch, FunctionComponent, useState} from 'react';
 import {View} from 'react-native';
 
-// hooks
-import {useTypedSelector} from '../hooks/useTypeSelector';
-import axios from 'axios';
+// api
 import {Action, ReduxType} from '../models';
 import {useActions} from '../hooks/useAction';
-import {useDispatch} from 'react-redux';
-import {navigate, loading} from '../redux/actions';
+import {ApiService} from '../services';
 
 // styles
 import {styles} from '../styles';
@@ -18,6 +15,7 @@ import {MainButton, InputForm} from '../components';
 // icon
 import {Icon} from '../utils/Icon';
 import {Logo} from '../assets/LogoSvg';
+import {useTypedSelector} from '../hooks/useTypeSelector';
 
 interface Props {
   dispatch: Dispatch<Action>;
@@ -28,9 +26,7 @@ export const AuthScreen: FunctionComponent<Props> = ({}) => {
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<{}>({email: '', password: ''});
 
-  const {fetchCustomers} = useActions();
-
-  const dispatch = useDispatch();
+  const {navigateAction, loginAction} = useActions();
 
   const {root, centerPosition} = styles;
 
@@ -54,27 +50,23 @@ export const AuthScreen: FunctionComponent<Props> = ({}) => {
     }
   };
 
-  const Login = async () => {
+  const Submit = async () => {
     verify();
 
     try {
-      dispatch(loading(true));
-
-      const response = await axios.get(
-        'https://jsonplaceholder.typicode.com/todos/1',
-      );
-
-      setTimeout(() => {
-        dispatch({type: ReduxType.LOG_IN, payload: response.data});
-        dispatch(navigate(ReduxType.MAIN));
-        dispatch(loading(false));
-      }, 500);
+      await ApiService.INSTANCE.Login(email, password).then(resp => {
+        loginAction(resp.token_type + ' ' + resp.access_token);
+        navigateAction(ReduxType.MAIN);
+      });
     } catch (e) {
-      dispatch(navigate(ReduxType.SPLASH));
-      dispatch(loading(false));
+      console.log('ERROR');
+      setError({
+        email: 'Указан неверный email',
+        password: 'Указан неверный пароль',
+      });
+      //dispatch(navigate(ReduxType.SPLASH));
+      //dispatch(loading(false));
     }
-
-    // fetchCustomers();
   };
 
   return (
@@ -105,7 +97,7 @@ export const AuthScreen: FunctionComponent<Props> = ({}) => {
         title="Войти"
         style={{marginTop: 24}}
         active={true}
-        onPress={() => Login()}
+        onPress={Submit}
       />
     </View>
   );
