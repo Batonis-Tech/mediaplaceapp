@@ -1,9 +1,9 @@
-import React, {type PropsWithChildren} from 'react';
-import {SafeAreaView, StatusBar} from 'react-native';
+import React from 'react';
+import {StatusBar} from 'react-native';
 
 // redux
 import {Provider} from 'react-redux';
-import store from './src/redux/store';
+import {store} from './src/redux/store';
 
 // nav
 import {AppNavigator} from './src/navigation/AppNavigator';

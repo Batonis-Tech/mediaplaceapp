@@ -1,11 +1,11 @@
-import {ReduxType} from '../../models';
+import {Action, NavigatorState, ReduxType} from '../../models';
 
-const initState = {
+const initState: NavigatorState = {
   currentScreen: ReduxType.AUTH,
   loading: false,
 };
 
-export function navigationReducers(state = initState, action) {
+export function navigationReducers(state = initState, action: Action) {
   switch (action.type) {
     case ReduxType.SPLASH:
       return {...state, currentScreen: ReduxType.SPLASH};
@@ -13,6 +13,10 @@ export function navigationReducers(state = initState, action) {
       return {...state, currentScreen: ReduxType.AUTH};
     case ReduxType.MAIN:
       return {...state, currentScreen: ReduxType.MAIN};
+    case ReduxType.STOP_LOADING:
+      return {...state, loading: false};
+    case ReduxType.START_LOADING:
+      return {...state, loading: true};
     default:
       return state;
   }

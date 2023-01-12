@@ -117,8 +117,11 @@ export const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: Color.white,
     paddingHorizontal: 16,
-    // paddingVertical: 12,
     borderRadius: 8,
   },
-  valueContainer: {},
+  errorContainer: {
+    borderColor: Color.danger_500,
+    borderWidth: 1,
+  },
+  errorText: {marginTop: 2, color: Color.danger_500},
 });

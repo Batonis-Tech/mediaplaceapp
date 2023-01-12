@@ -19,9 +19,6 @@ import {NoPreview, Preview} from '../assets/IconSvg';
 // helpers
 import {touchOpacity} from '../helpers';
 
-// other deps
-import {SvgXml} from 'react-native-svg';
-
 interface Props extends InputProps {
   value: any;
   style?: StyleProp<ViewStyle>;
@@ -34,19 +31,31 @@ interface Props extends InputProps {
   autoCorrect?: boolean;
   autoComplete?: string;
   textContentType?: string;
-  inputColor?: string;
   errorMessage?: string;
 }
 
 export const InputForm: FunctionComponent<Props> = props => {
-  //let inputColor = props.inputColor ? props.inputColor : COLORS.dark;
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
 
-  const {inputContainer, between_container, text_Input} = styles;
+  const {
+    inputContainer,
+    between_container,
+    errorContainer,
+    errorText,
+    // fonts
+    text_Input,
+    text_Caption1,
+  } = styles;
 
   return (
     <>
-      <View style={[inputContainer, between_container, props.style]}>
+      <View
+        style={[
+          inputContainer,
+          between_container,
+          props.errorMessage ? errorContainer : undefined,
+          props.style,
+        ]}>
         <TextInput
           onFocus={props.onFocus}
           onBlur={props.onBlur}
@@ -55,13 +64,11 @@ export const InputForm: FunctionComponent<Props> = props => {
           //autoComplete={props.autoComplete}
           textContentType={props.textContentType}
           secureTextEntry={props.textContentType === 'password'}
-          style={text_Input}
+          style={[text_Input, {flex: 1}]}
           onChangeText={props.onChangeText}
           value={props.value}
           placeholder={props.placeholder}
           placeholderTextColor={Color.secondary_500}
-          testID={props.testID}
-          contextMenuHidden={false}
           secureTextEntry={
             props.textContentType === 'password' && secureTextEntry
           }
@@ -80,10 +87,9 @@ export const InputForm: FunctionComponent<Props> = props => {
         )}
       </View>
 
-      {/*
-      {props.errorMessage ? (
-        <Text style={styles.errorText}>{props.errorMessage}</Text>
-      ) : null} */}
+      {props.errorMessage && (
+        <Text style={[text_Caption1, errorText]}>{props.errorMessage}</Text>
+      )}
     </>
   );
 };

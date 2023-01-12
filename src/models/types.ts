@@ -1,9 +1,12 @@
-export const ReduxType = {
+export enum ReduxType {
   // Navigation
-  AUTH: 'AUTH',
-  MAIN: 'MAIN',
-  SPLASH: 'SPLASH',
+  AUTH = 'AUTH',
+  MAIN = 'MAIN',
+  SPLASH = 'SPLASH',
+  STOP_LOADING = 'STOP_LOADING',
+  START_LOADING = 'START_LOADING',
 
   // Auth
-  LOG_IN: 'LOG_IN',
-};
+  LOG_IN = 'LOG_IN',
+  LOG_OUT = 'LOG_OUT',
+}
