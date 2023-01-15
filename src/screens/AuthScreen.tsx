@@ -7,7 +7,7 @@ import {useActions} from '../hooks/useAction';
 import {ApiService} from '../services';
 
 // styles
-import {styles} from '../styles';
+import {Color, styles} from '../styles';
 
 // components
 import {MainButton, InputForm} from '../components';
@@ -22,11 +22,18 @@ interface Props {
 }
 
 export const AuthScreen: FunctionComponent<Props> = ({}) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<{}>({email: '', password: ''});
+  const [focus, setFocus] = useState({
+    email: false,
+    password: false,
+  });
 
-  const {navigateAction, loginAction} = useActions();
+  const {navigateAction, loginAction, loadingAction, saveUserInfo} =
+    useActions();
+  const state = useTypedSelector(state => state);
 
   const {root, centerPosition} = styles;
 
@@ -50,22 +57,34 @@ export const AuthScreen: FunctionComponent<Props> = ({}) => {
     }
   };
 
+  const mainLoading = (show: boolean) => {
+    loadingAction(show);
+    setLoading(show);
+  };
+
   const Submit = async () => {
+    let token: string = '';
     verify();
 
     try {
-      await ApiService.INSTANCE.Login(email, password).then(resp => {
-        loginAction(resp.token_type + ' ' + resp.access_token);
+      mainLoading(true);
+
+      await ApiService.INSTANCE.login(email, password).then(resp => {
+        token = resp.token_type + ' ' + resp.access_token;
+        loginAction(token);
+      });
+
+      await ApiService.INSTANCE.getUserInfo(token).then(resp => {
+        saveUserInfo(resp);
         navigateAction(ReduxType.MAIN);
+        mainLoading(false);
       });
     } catch (e) {
-      console.log('ERROR');
       setError({
         email: 'Указан неверный email',
         password: 'Указан неверный пароль',
       });
-      //dispatch(navigate(ReduxType.SPLASH));
-      //dispatch(loading(false));
+      mainLoading(false);
     }
   };
 
@@ -80,7 +99,7 @@ export const AuthScreen: FunctionComponent<Props> = ({}) => {
           value={email}
           errorMessage={error.email}
           onChangeText={val => setEmail(val)}
-          // autoFocus={true}
+          onFocus={() => setFocus(prevState => ({...prevState, email: true}))}
         />
 
         <InputForm
@@ -90,14 +109,18 @@ export const AuthScreen: FunctionComponent<Props> = ({}) => {
           value={password}
           errorMessage={error.password}
           onChangeText={val => setPassword(val)}
+          onFocus={() =>
+            setFocus(prevState => ({...prevState, password: true}))
+          }
         />
       </View>
 
       <MainButton
         title="Войти"
         style={{marginTop: 24}}
-        active={true}
+        color={!loading ? Color.primary_500 : Color.primary_050}
         onPress={Submit}
+        focus={focus.email || focus.password}
       />
     </View>
   );

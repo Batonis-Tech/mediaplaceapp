@@ -1,7 +1,6 @@
 import {ReduxType} from '../../models';
 
 export function navigateAction(screen: ReduxType) {
-  console.log('navigateAction');
   return {type: screen, payload: screen};
 }
 

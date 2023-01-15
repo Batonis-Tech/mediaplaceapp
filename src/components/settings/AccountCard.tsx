@@ -12,6 +12,7 @@ import {Notes, Account, Newspaper, DownArrow} from '../../assets/IconSvg';
 import {touchOpacity} from '../../helpers';
 
 interface Props {
+  data: {};
   style?: StyleProp<ViewStyle>;
   status?: string;
 }
@@ -34,7 +35,7 @@ export const AccountCard: FunctionComponent<Props> = props => {
 
       <View style={{marginLeft: 16}}>
         <TouchableOpacity style={row_container} activeOpacity={touchOpacity}>
-          <Text style={text_Subtitle1}>Мария</Text>
+          <Text style={text_Subtitle1}>{props.data.name}</Text>
           <Icon iconName={DownArrow} size={20} fill={Color.secondary_900} />
         </TouchableOpacity>
 

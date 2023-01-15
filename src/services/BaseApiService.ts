@@ -1,9 +1,10 @@
 import axios from 'axios';
+import {useTypedSelector} from '../hooks/useTypeSelector';
 
 export class BaseApiService {
   static INSTANCE = new BaseApiService();
 
-  //token = useTypedSelector(state => state.user.access_token);
+  // token = useTypedSelector(state => state.user.access_token);
 
   post = async (url: string, headers: {}) => {
     console.log('postUrl: ', url);
@@ -11,7 +12,7 @@ export class BaseApiService {
     return await axios
       .post(url, headers)
       .then(response => {
-        console.log('post response', response.data);
+        //console.log('post response', response.data);
         return response.data;
       })
       .catch(error => {
@@ -30,11 +31,11 @@ export class BaseApiService {
         },
       })
       .then(function (response) {
-        console.log('response', response.data);
+        //console.log('get response', response.data);
         return response.data;
       })
       .catch(function (error) {
-        console.log('response', error);
+        console.log('get response', error);
         return error;
       });
   };

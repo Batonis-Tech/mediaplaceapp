@@ -1,20 +1,19 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import {ActivityIndicator} from 'react-native';
+import {ScrollView} from 'react-native';
 
 // styles
-import {Color, styles} from '../styles';
+import {styles} from '../styles';
 
 // components
-import {OrdersCard} from '../components';
+import {OrdersCard, SkeletonComponent} from '../components';
 
 //
 import {SearchBar, Text} from 'react-native-elements';
-import {useActions} from '../hooks/useAction';
 
+// api
+import {useActions} from '../hooks/useAction';
 import {useTypedSelector} from '../hooks/useTypeSelector';
 import {ApiService} from '../services';
-import {ReduxType} from '../models';
-import {ScrollView} from 'react-native-gesture-handler';
 
 interface Props {}
 
@@ -24,24 +23,18 @@ const OrdersScreen: FunctionComponent<Props> = props => {
 
   const {root} = styles;
 
-  const {access_token, orders} = useTypedSelector(state => state.user);
+  const {access_token, orders, user} = useTypedSelector(state => state.user);
   const {getOrders} = useActions();
 
   useEffect(() => {
-    ApiService.INSTANCE.getGetOrdersUser(access_token).then(resp => {
+    ApiService.INSTANCE.getGetOrdersUser(access_token, user.id).then(resp => {
       getOrders(resp.results);
       setLoading(false);
     });
   }, []);
 
   if (loading) {
-    return (
-      <ActivityIndicator
-        style={{flex: 1}}
-        size="large"
-        color={Color.secondary_600}
-      />
-    );
+    return <SkeletonComponent type="OrdersScreen" />;
   }
 
   return (
@@ -53,13 +46,15 @@ const OrdersScreen: FunctionComponent<Props> = props => {
         lightTheme={true}
       /> */}
 
-      {orders?.map((item: {}, index: number) => {
+      {orders?.map((item: any, index: number) => {
         return (
           <OrdersCard
             key={index}
             order={item}
             onPress={() => {
-              props.navigation.navigate('OrderDetailsScreen');
+              props.navigation.navigate('OrderDetailsScreen', {
+                orderId: item.id,
+              });
             }}
             style={{marginTop: 12}}
           />

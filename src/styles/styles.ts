@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StatusBar, StyleSheet} from 'react-native';
 import {Color, Fonts} from '.';
 
 export const styles = StyleSheet.create({
@@ -76,6 +76,7 @@ export const styles = StyleSheet.create({
 
   // general
   root: {flex: 1, paddingHorizontal: 16},
+  paddingTopWithoutHeader: {paddingTop: StatusBar.currentHeight + 16},
   row_container: {flexDirection: 'row', alignItems: 'center'},
   between_container: {
     width: '100%',

@@ -20,8 +20,7 @@ export const ApiEndpoints = {
   GetOrdersProvider: (id: string) =>
     Url(`/api/v1/products/orders/?provider=${id}`),
 
-  GetOrderDetails: (id: string) =>
-    Url(`/api/v1/products/orders/76?provider_id=${id}`),
+  GetOrderDetails: (id: string) => Url(`/api/v1/products/orders/${id}?`),
 
   // search
 } as const;

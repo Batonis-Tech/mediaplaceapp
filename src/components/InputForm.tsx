@@ -27,7 +27,7 @@ interface Props extends InputProps {
   onFocus: () => void;
   reset?: boolean;
   placeholder: string;
-  autoFocus?: boolean;
+  // autoFocus?: boolean;
   autoCorrect?: boolean;
   autoComplete?: string;
   textContentType?: string;
@@ -59,7 +59,7 @@ export const InputForm: FunctionComponent<Props> = props => {
         <TextInput
           onFocus={props.onFocus}
           onBlur={props.onBlur}
-          autoFocus={props.autoFocus}
+          // autoFocus={props.autoFocus}
           // autoCorrect={props.autoCorrect}
           //autoComplete={props.autoComplete}
           textContentType={props.textContentType}

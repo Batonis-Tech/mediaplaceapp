@@ -10,7 +10,8 @@ import {touchOpacity} from '../helpers';
 interface Props {
   title: string;
   style?: StyleProp<ViewStyle>;
-  active?: boolean;
+  color?: string;
+  focus?: boolean;
   onPress: () => void;
 }
 
@@ -23,14 +24,17 @@ export const MainButton: FunctionComponent<Props> = props => {
         settingCard,
         centerPosition,
         props.style,
-        {backgroundColor: props.active ? Color.primary_500 : Color.white},
+        {
+          backgroundColor: props.color || Color.white,
+          borderRadius: props.focus ? 0 : 8,
+        },
       ]}
       onPress={props.onPress}
       activeOpacity={touchOpacity}>
       <Text
         style={[
           text_Button,
-          {color: props.active ? Color.white : Color.primary_500},
+          {color: props.color ? Color.white : Color.primary_500},
         ]}>
         {props.title}
       </Text>

@@ -1,24 +1,46 @@
-import React, {Dispatch, FunctionComponent, useState} from 'react';
-import {StatusBar, View} from 'react-native';
+import React, {Dispatch, FunctionComponent, useEffect, useState} from 'react';
+import {View} from 'react-native';
 
 // styles
 import {styles} from '../styles';
 
 // components
-import {MainButton, NotificationCard, AccountCard} from '../components';
+import {
+  MainButton,
+  NotificationCard,
+  AccountCard,
+  SkeletonComponent,
+} from '../components';
+import {useTypedSelector} from '../hooks/useTypeSelector';
 
 interface Props {
   dispatch: Dispatch<any>;
 }
 
 const SettingsScreen: FunctionComponent<Props> = ({dispatch}) => {
-  const [activeSwitch, setActiveSwitch] = useState<boolean>(false);
+  const [activeSwitch, setActiveSwitch] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const {root} = styles;
+  const {access_token, orders, user} = useTypedSelector(state => state.user);
+
+  const {root, paddingTopWithoutHeader} = styles;
+
+  useEffect(() => {
+    console.log(user);
+  }, []);
+
+  if (loading) {
+    return (
+      <SkeletonComponent
+        type="SettingsScreen"
+        style={paddingTopWithoutHeader}
+      />
+    );
+  }
 
   return (
-    <View style={[root, {paddingTop: StatusBar.currentHeight + 16}]}>
-      <AccountCard />
+    <View style={[root, paddingTopWithoutHeader]}>
+      <AccountCard data={user} />
 
       <NotificationCard
         active={activeSwitch}
@@ -26,7 +48,11 @@ const SettingsScreen: FunctionComponent<Props> = ({dispatch}) => {
         onValueChange={() => setActiveSwitch(!activeSwitch)}
       />
 
-      <MainButton title="Выйти из аккаунта" style={{marginTop: 16}} />
+      <MainButton
+        title="Выйти из аккаунта"
+        style={{marginTop: 16}}
+        onPress={() => {}}
+      />
     </View>
   );
 };

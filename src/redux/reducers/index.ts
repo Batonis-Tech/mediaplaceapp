@@ -1,2 +1,2 @@
-export * from './user';
-export * from './navigation';
+export * from './userReducer';
+export * from './navigationReducer';

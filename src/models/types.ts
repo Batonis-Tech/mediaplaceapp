@@ -12,4 +12,6 @@ export enum ReduxType {
 
   // Respons
   GET_ORDERS = 'GET_ORDERS',
+  GET_ORDERS_DETAILS = 'GET_ORDERS_DETAILS',
+  GET_ME = 'GET_ME',
 }

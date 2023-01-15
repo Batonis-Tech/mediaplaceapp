@@ -7,7 +7,7 @@ import {ApiEndpoints, CLIENT_ID, CLIENT_SECRET} from './Endpoints';
 export class ApiService {
   static INSTANCE = new ApiService();
 
-  Login = async (username: string, password: string) => {
+  login = async (username: string, password: string) => {
     return await BaseApiService.INSTANCE.post(ApiEndpoints.SignIn, {
       grant_type: 'password',
       client_id: CLIENT_ID,
@@ -17,9 +17,22 @@ export class ApiService {
     }).then(resp => resp);
   };
 
-  getGetOrdersUser = async (token: string) => {
+  getUserInfo = async (token: string) => {
+    return await BaseApiService.INSTANCE.get(ApiEndpoints.GetMe, token).then(
+      resp => resp,
+    );
+  };
+
+  getGetOrdersUser = async (token: string, id: string) => {
     return await BaseApiService.INSTANCE.get(
-      ApiEndpoints.GetOrdersMy('1'),
+      ApiEndpoints.GetOrdersMy(id),
+      token,
+    ).then(resp => resp);
+  };
+
+  openOrder = async (token: string, id: string) => {
+    return await BaseApiService.INSTANCE.get(
+      ApiEndpoints.GetOrderDetails(id),
       token,
     ).then(resp => resp);
   };
