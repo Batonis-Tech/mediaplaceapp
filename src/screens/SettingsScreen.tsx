@@ -12,6 +12,7 @@ import {
   SkeletonComponent,
 } from '../components';
 import {useTypedSelector} from '../hooks/useTypeSelector';
+import {ApiService} from '../services';
 
 interface Props {
   dispatch: Dispatch<any>;
@@ -26,7 +27,10 @@ const SettingsScreen: FunctionComponent<Props> = ({dispatch}) => {
   const {root, paddingTopWithoutHeader} = styles;
 
   useEffect(() => {
-    console.log(user);
+    ApiService.INSTANCE.getGetOrdersUser(access_token).then(resp => {
+      //  getOrders(resp.results);
+      // setLoading(false);
+    });
   }, []);
 
   if (loading) {
