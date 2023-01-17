@@ -3,12 +3,9 @@ export enum ReduxType {
   AUTH = 'AUTH',
   MAIN = 'MAIN',
   SPLASH = 'SPLASH',
+  ERROR = 'ERROR',
   STOP_LOADING = 'STOP_LOADING',
   START_LOADING = 'START_LOADING',
-
-  // Auth
-  LOG_IN = 'LOG_IN',
-  LOG_OUT = 'LOG_OUT',
 
   // Respons
   GET_ORDERS = 'GET_ORDERS',

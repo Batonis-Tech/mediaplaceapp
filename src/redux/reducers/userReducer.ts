@@ -11,10 +11,6 @@ const initState: AuthState = {
 
 export const userReducer = (state = initState, action: Action): AuthState => {
   switch (action.type) {
-    case ReduxType.LOG_IN:
-      return {...state, access_token: action.payload};
-    case ReduxType.LOG_OUT:
-      return {...state, access_token: action.payload};
     case ReduxType.GET_ME:
       return {...state, user: action.payload};
     case ReduxType.GET_ORDERS:

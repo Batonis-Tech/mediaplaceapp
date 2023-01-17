@@ -1,9 +1,5 @@
 import {ReduxType} from '../../models';
 
-export function loginAction(payload: any) {
-  return {type: ReduxType.LOG_IN, payload};
-}
-
 export function saveUserInfo(payload: any) {
   return {type: ReduxType.GET_ME, payload};
 }

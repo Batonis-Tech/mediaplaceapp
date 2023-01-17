@@ -1,4 +1,4 @@
-import React, {Dispatch, FunctionComponent, useEffect, useState} from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import {View} from 'react-native';
 
 // styles
@@ -11,27 +11,31 @@ import {
   AccountCard,
   SkeletonComponent,
 } from '../components';
+
+// api
 import {useTypedSelector} from '../hooks/useTypeSelector';
 import {ApiService} from '../services';
+import {useActions} from '../hooks/useAction';
+import {ReduxType} from '../models';
 
-interface Props {
-  dispatch: Dispatch<any>;
-}
+interface Props {}
 
-const SettingsScreen: FunctionComponent<Props> = ({dispatch}) => {
+const SettingsScreen: FunctionComponent<Props> = props => {
   const [activeSwitch, setActiveSwitch] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const {access_token, orders, user} = useTypedSelector(state => state.user);
+  const {orders, user} = useTypedSelector(state => state.user);
+  const {navigateAction} = useActions();
 
   const {root, paddingTopWithoutHeader} = styles;
 
-  useEffect(() => {
-    ApiService.INSTANCE.getGetOrdersUser(access_token).then(resp => {
-      //  getOrders(resp.results);
-      // setLoading(false);
+  useEffect(() => {}, []);
+
+  const exit = () => {
+    ApiService.INSTANCE.logout().then(() => {
+      navigateAction(ReduxType.AUTH);
     });
-  }, []);
+  };
 
   if (loading) {
     return (
@@ -55,7 +59,7 @@ const SettingsScreen: FunctionComponent<Props> = ({dispatch}) => {
       <MainButton
         title="Выйти из аккаунта"
         style={{marginTop: 16}}
-        onPress={() => {}}
+        onPress={exit}
       />
     </View>
   );

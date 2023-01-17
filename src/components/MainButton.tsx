@@ -12,6 +12,7 @@ interface Props {
   style?: StyleProp<ViewStyle>;
   color?: string;
   focus?: boolean;
+  disabled?: boolean;
   onPress: () => void;
 }
 
@@ -30,7 +31,8 @@ export const MainButton: FunctionComponent<Props> = props => {
         },
       ]}
       onPress={props.onPress}
-      activeOpacity={touchOpacity}>
+      activeOpacity={touchOpacity}
+      disabled={props.disabled}>
       <Text
         style={[
           text_Button,

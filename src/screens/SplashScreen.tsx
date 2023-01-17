@@ -4,30 +4,38 @@ import {View, Text, ActivityIndicator} from 'react-native';
 // styles
 import {styles, Color} from '../styles';
 
-import {get} from '../services';
-import {useDispatch, useSelector} from 'react-redux';
+import {ApiService, StorageService} from '../services';
+import {useActions} from '../hooks/useAction';
+import {ReduxType} from '../models';
 
 interface Props {}
 
 export const SplashScreen: FunctionComponent<Props> = props => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [art, setArt] = useState([]);
 
   const {root, centerPosition} = styles;
 
-  const dispatch = useDispatch();
-  const {user} = useSelector(state => state.user);
-
-  const src =
-    'https://content.guardianapis.com/search?page=2&q=debate&api-key=test';
+  const {navigateAction, saveUserInfo} = useActions();
 
   const tryToLogIn = () => {
-    dispatch(get(src));
-    console.log(user);
+    console.log('tryToLogIn');
+    setLoading(true);
 
-    if (user.length !== 0) {
-      setLoading(false);
-    }
+    StorageService.INSTANCE.getAuthToken().then(data => {
+      console.log('AuthToken', data);
+      if (data === null) {
+        navigateAction(ReduxType.AUTH);
+      } else {
+        ApiService.INSTANCE.getUserInfo()
+          .then(resp => {
+            saveUserInfo(resp);
+            navigateAction(ReduxType.MAIN);
+          })
+          .finally(() => setLoading(false));
+      }
+    });
+    // .finally(() => setLoading(false));
   };
 
   useEffect(tryToLogIn, []);
@@ -37,7 +45,7 @@ export const SplashScreen: FunctionComponent<Props> = props => {
       <ActivityIndicator
         style={{flex: 1}}
         size="large"
-        color={Color.secondary_600}
+        color={Color.primary_500}
       />
     );
   }
@@ -45,10 +53,6 @@ export const SplashScreen: FunctionComponent<Props> = props => {
   return (
     <View style={[root, centerPosition]}>
       <Text>Что-то пошло не так...</Text>
-
-      {user?.map((item, index) => {
-        return <Text key={index}>{index}</Text>;
-      })}
     </View>
   );
 };

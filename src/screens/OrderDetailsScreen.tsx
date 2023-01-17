@@ -19,17 +19,13 @@ const OrderDetailsScreen: FunctionComponent<Props> = props => {
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>('');
 
-  const {access_token, openOrder} = useTypedSelector(state => state.user);
+  const {openOrder} = useTypedSelector(state => state.user);
   const {getOrderDetails} = useActions();
 
   const {root} = styles;
 
   useEffect(() => {
-    ApiService.INSTANCE.openOrder(
-      access_token,
-      props.route.params.orderId,
-    ).then(resp => {
-      console.log('resp', resp);
+    ApiService.INSTANCE.openOrder(props.route.params.orderId).then(resp => {
       getOrderDetails(resp);
       setLoading(false);
     });

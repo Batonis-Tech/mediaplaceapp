@@ -81,7 +81,7 @@ export const InputForm: FunctionComponent<Props> = props => {
             <Icon
               iconName={secureTextEntry ? NoPreview : Preview}
               size={20}
-              fill={Color.secondary_600}
+              fill={Color.secondary_400}
             />
           </TouchableOpacity>
         )}

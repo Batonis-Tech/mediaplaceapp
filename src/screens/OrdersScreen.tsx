@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, View} from 'react-native';
 
 // styles
 import {styles} from '../styles';
@@ -14,6 +14,7 @@ import {SearchBar, Text} from 'react-native-elements';
 import {useActions} from '../hooks/useAction';
 import {useTypedSelector} from '../hooks/useTypeSelector';
 import {ApiService} from '../services';
+import {AppState} from '../models';
 
 interface Props {}
 
@@ -23,14 +24,21 @@ const OrdersScreen: FunctionComponent<Props> = props => {
 
   const {root} = styles;
 
-  const {access_token, orders, user} = useTypedSelector(state => state.user);
-  const {getOrders} = useActions();
+  const {orders, user} = useTypedSelector((state: AppState) => state.user);
+  const {getOrders, errorResponse} = useActions();
 
   useEffect(() => {
-    ApiService.INSTANCE.getGetOrdersUser(access_token, user.id).then(resp => {
-      getOrders(resp.results);
-      setLoading(false);
-    });
+    setLoading(true);
+
+    ApiService.INSTANCE.getGetOrdersUser(user.id)
+      .then(resp => {
+        getOrders(resp.results);
+      })
+      .catch(error => {
+        console.log('error', error);
+        errorResponse();
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) {
@@ -48,16 +56,17 @@ const OrdersScreen: FunctionComponent<Props> = props => {
 
       {orders?.map((item: any, index: number) => {
         return (
-          <OrdersCard
-            key={index}
-            order={item}
-            onPress={() => {
-              props.navigation.navigate('OrderDetailsScreen', {
-                orderId: item.id,
-              });
-            }}
-            style={{marginTop: 12}}
-          />
+          <View key={index}>
+            <OrdersCard
+              order={item}
+              onPress={() => {
+                props.navigation.navigate('OrderDetailsScreen', {
+                  orderId: item.id,
+                });
+              }}
+              style={{marginTop: 12}}
+            />
+          </View>
         );
       })}
     </ScrollView>

@@ -1,7 +1,7 @@
 import {Action, NavigatorState, ReduxType} from '../../models';
 
 const initState: NavigatorState = {
-  currentScreen: ReduxType.AUTH,
+  currentScreen: ReduxType.SPLASH,
   loading: false,
 };
 
@@ -13,6 +13,8 @@ export function navigationReducers(state = initState, action: Action) {
       return {...state, currentScreen: ReduxType.AUTH};
     case ReduxType.MAIN:
       return {...state, currentScreen: ReduxType.MAIN};
+    case ReduxType.ERROR:
+      return {...state, currentScreen: ReduxType.ERROR};
     case ReduxType.STOP_LOADING:
       return {...state, loading: false};
     case ReduxType.START_LOADING:

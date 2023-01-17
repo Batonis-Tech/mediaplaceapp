@@ -1,8 +1,8 @@
-import React, {Dispatch, FunctionComponent, useState} from 'react';
+import React, {FunctionComponent, useState} from 'react';
 import {View} from 'react-native';
 
 // api
-import {Action, ReduxType} from '../models';
+import {ReduxType} from '../models';
 import {useActions} from '../hooks/useAction';
 import {ApiService} from '../services';
 
@@ -15,13 +15,10 @@ import {MainButton, InputForm} from '../components';
 // icon
 import {Icon} from '../utils/Icon';
 import {Logo} from '../assets/LogoSvg';
-import {useTypedSelector} from '../hooks/useTypeSelector';
 
-interface Props {
-  dispatch: Dispatch<Action>;
-}
+interface Props {}
 
-export const AuthScreen: FunctionComponent<Props> = ({}) => {
+export const AuthScreen: FunctionComponent<Props> = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -31,9 +28,7 @@ export const AuthScreen: FunctionComponent<Props> = ({}) => {
     password: false,
   });
 
-  const {navigateAction, loginAction, loadingAction, saveUserInfo} =
-    useActions();
-  const state = useTypedSelector(state => state);
+  const {navigateAction, loadingAction, saveUserInfo} = useActions();
 
   const {root, centerPosition} = styles;
 
@@ -43,18 +38,22 @@ export const AuthScreen: FunctionComponent<Props> = ({}) => {
       password: '',
     });
 
+    let errorFound = false;
     if (email?.length === 0) {
       setError(prevState => ({
         ...prevState,
         email: 'Обязательно для заполнения',
       }));
+      errorFound = true;
     }
     if (password?.length === 0) {
       setError(prevState => ({
         ...prevState,
         password: 'Обязательно для заполнения',
       }));
+      errorFound = true;
     }
+    return errorFound;
   };
 
   const mainLoading = (show: boolean) => {
@@ -63,29 +62,27 @@ export const AuthScreen: FunctionComponent<Props> = ({}) => {
   };
 
   const Submit = async () => {
-    let token: string = '';
-    verify();
+    let errorFound = verify();
 
-    try {
-      mainLoading(true);
+    if (errorFound) {
+      return;
+    }
 
-      await ApiService.INSTANCE.login(email, password).then(resp => {
-        token = resp.token_type + ' ' + resp.access_token;
-        loginAction(token);
-      });
+    mainLoading(true);
 
-      await ApiService.INSTANCE.getUserInfo(token).then(resp => {
+    ApiService.INSTANCE.login(email!!.trim(), password!!.trim())
+      .then(resp => {
         saveUserInfo(resp);
         navigateAction(ReduxType.MAIN);
-        mainLoading(false);
-      });
-    } catch (e) {
-      setError({
-        email: 'Указан неверный email',
-        password: 'Указан неверный пароль',
-      });
-      mainLoading(false);
-    }
+      })
+      .catch(e => {
+        setError({
+          email: 'Указан неверный email',
+          password: 'Указан неверный пароль',
+        });
+        // errorResponse();
+      })
+      .finally(() => mainLoading(false));
   };
 
   return (
