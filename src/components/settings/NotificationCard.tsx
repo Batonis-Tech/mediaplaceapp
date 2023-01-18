@@ -14,11 +14,11 @@ interface Props {
 }
 
 export const NotificationCard: FunctionComponent<Props> = props => {
-  const {settingCard, row_container, text_Body1} = styles;
+  const {root, settingCard, rowContainer, text_Body1} = styles;
 
   return (
-    <View style={[settingCard, row_container, props.style]}>
-      <Text style={[text_Body1, {marginRight: 16, flex: 1}]}>
+    <View style={[settingCard, rowContainer, props.style]}>
+      <Text style={[text_Body1, root, {marginRight: 16}]}>
         Уведомления об изменении статуса заказа
       </Text>
 

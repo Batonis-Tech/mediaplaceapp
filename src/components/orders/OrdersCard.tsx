@@ -18,8 +18,8 @@ interface Props {
 export const OrdersCard: FunctionComponent<Props> = props => {
   const {
     orderCard,
-    between_container,
-    row_container,
+    betweenContainer,
+    rowContainer,
     //fonts
     text_Caption1,
     text_Caption2,
@@ -38,7 +38,7 @@ export const OrdersCard: FunctionComponent<Props> = props => {
         {order.status}
       </Text>
 
-      <View style={[between_container, {marginTop: 2}]}>
+      <View style={[betweenContainer, {marginTop: 2}]}>
         <Text style={[text_Subtitle1, {marginRight: 16, flex: 1}]}>
           {props.role === 'user' ? order.provider.name : order.user.name}
         </Text>
@@ -46,10 +46,10 @@ export const OrdersCard: FunctionComponent<Props> = props => {
         <Text style={text_Body2}>{formatCost(order.total_cost)}</Text>
       </View>
 
-      <View style={between_container}>
+      <View style={betweenContainer}>
         <Text style={text_Caption1}>{order.product.type.name}</Text>
 
-        <View style={row_container}>
+        <View style={rowContainer}>
           <Text style={[text_Caption2, {marginRight: 8}]}>
             {useMoment(order.created)}
           </Text>

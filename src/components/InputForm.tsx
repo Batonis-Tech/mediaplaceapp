@@ -38,8 +38,9 @@ export const InputForm: FunctionComponent<Props> = props => {
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
 
   const {
+    root,
     inputContainer,
-    between_container,
+    betweenContainer,
     errorContainer,
     errorText,
     // fonts
@@ -52,7 +53,7 @@ export const InputForm: FunctionComponent<Props> = props => {
       <View
         style={[
           inputContainer,
-          between_container,
+          betweenContainer,
           props.errorMessage ? errorContainer : undefined,
           props.style,
         ]}>
@@ -64,7 +65,7 @@ export const InputForm: FunctionComponent<Props> = props => {
           //autoComplete={props.autoComplete}
           textContentType={props.textContentType}
           secureTextEntry={props.textContentType === 'password'}
-          style={[text_Input, {flex: 1}]}
+          style={[text_Input, root]}
           onChangeText={props.onChangeText}
           value={props.value}
           placeholder={props.placeholder}

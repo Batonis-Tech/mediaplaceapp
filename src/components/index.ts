@@ -6,3 +6,4 @@ export * from './MainButton';
 export * from './InputForm';
 export * from './Spinner';
 export * from './SkeletonComponent';
+export * from './HeaderModal';

@@ -30,7 +30,7 @@ export const AuthScreen: FunctionComponent<Props> = () => {
   const {navigateAction, loadingAction, saveUserInfo, saveProfileInfo} =
     useActions();
 
-  const {root, centerPosition} = styles;
+  const {screen, centerPosition} = styles;
 
   const verify = () => {
     setError({
@@ -84,7 +84,7 @@ export const AuthScreen: FunctionComponent<Props> = () => {
   };
 
   return (
-    <View style={[root, centerPosition]}>
+    <View style={[screen, centerPosition]}>
       <Icon iconName={Logo} width={185} height={25} />
 
       <View style={{marginTop: 40, width: '100%'}}>

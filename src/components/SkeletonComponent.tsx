@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const SkeletonComponent: FunctionComponent<Props> = props => {
-  const {root} = styles;
+  const {screen} = styles;
 
   const data = (length: number, height: number) => {
     return new Array(length).fill({height});
@@ -63,7 +63,7 @@ export const SkeletonComponent: FunctionComponent<Props> = props => {
   };
 
   return (
-    <View style={[root, props.style]}>
+    <View style={[screen, props.style]}>
       <Content />
     </View>
   );

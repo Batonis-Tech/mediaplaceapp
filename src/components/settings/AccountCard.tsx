@@ -21,7 +21,7 @@ interface Props {
 export const AccountCard: FunctionComponent<Props> = props => {
   const {
     settingCard,
-    row_container,
+    rowContainer,
     centerPosition,
     accountIcon,
     text_Subtitle1,
@@ -29,14 +29,14 @@ export const AccountCard: FunctionComponent<Props> = props => {
   } = styles;
 
   return (
-    <View style={[settingCard, row_container]}>
+    <View style={[settingCard, rowContainer]}>
       <View style={[centerPosition, accountIcon]}>
         <Icon iconName={Newspaper} size={20} fill={Color.secondary_900} />
       </View>
 
       <View>
         <TouchableOpacity
-          style={row_container}
+          style={rowContainer}
           activeOpacity={touchOpacity}
           onPress={() => props.onPress()}>
           <Text style={text_Subtitle1}>{props.data.name}</Text>

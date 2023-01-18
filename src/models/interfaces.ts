@@ -28,7 +28,7 @@ export interface AuthState {
     result: any;
   };
   orders: any;
-  orderDetails: {};
+  orderDetails: any;
   access_token: string;
   refresh_token: string;
 }

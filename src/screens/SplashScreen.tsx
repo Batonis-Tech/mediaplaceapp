@@ -13,7 +13,7 @@ interface Props {}
 export const SplashScreen: FunctionComponent<Props> = props => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const {root, centerPosition} = styles;
+  const {screen, root, centerPosition} = styles;
 
   const {navigateAction, saveUserInfo, saveProfileInfo} = useActions();
 
@@ -47,16 +47,12 @@ export const SplashScreen: FunctionComponent<Props> = props => {
 
   if (loading) {
     return (
-      <ActivityIndicator
-        style={{flex: 1}}
-        size="large"
-        color={Color.primary_500}
-      />
+      <ActivityIndicator style={root} size="large" color={Color.primary_500} />
     );
   }
 
   return (
-    <View style={[root, centerPosition]}>
+    <View style={[screen, centerPosition]}>
       <Text>Что-то пошло не так...</Text>
     </View>
   );

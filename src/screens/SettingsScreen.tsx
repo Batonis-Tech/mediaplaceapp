@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 
 // styles
 import {styles} from '../styles';
@@ -16,7 +16,7 @@ import {
   NotificationCard,
   AccountCard,
   SkeletonComponent,
-  ChangeProfile,
+  ChangeProfileModal,
 } from '../components';
 
 // api
@@ -24,6 +24,8 @@ import {useTypedSelector} from '../hooks/useTypeSelector';
 import {ApiService} from '../services';
 import {useActions} from '../hooks/useAction';
 import {ReduxType} from '../models';
+
+// other deps
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 
 interface Props {}
@@ -36,7 +38,7 @@ const SettingsScreen: FunctionComponent<Props> = props => {
   const {currentAccount, balance} = useTypedSelector(state => state.user);
   const {navigateAction, getBalance, errorResponse} = useActions();
 
-  const {root, paddingTopWithoutHeader} = styles;
+  const {screen, topWithoutHeader} = styles;
 
   const currentResponse = () => {
     return currentAccount.role === 'user'
@@ -46,8 +48,6 @@ const SettingsScreen: FunctionComponent<Props> = props => {
 
   useEffect(() => {
     setLoading(true);
-    console.log('role', currentAccount.role);
-    console.log('currentAccount', currentAccount?.data?.id);
 
     currentResponse()
       .then(resp => getBalance(resp))
@@ -62,6 +62,10 @@ const SettingsScreen: FunctionComponent<Props> = props => {
     bottomSheetModalRef.current?.present();
   }, []);
 
+  const handleCloseModal = useCallback(() => {
+    bottomSheetModalRef.current?.close();
+  }, []);
+
   const exit = () => {
     ApiService.INSTANCE.logout().then(() => {
       navigateAction(ReduxType.AUTH);
@@ -69,16 +73,11 @@ const SettingsScreen: FunctionComponent<Props> = props => {
   };
 
   if (loading) {
-    return (
-      <SkeletonComponent
-        type="SettingsScreen"
-        style={paddingTopWithoutHeader}
-      />
-    );
+    return <SkeletonComponent type="SettingsScreen" style={topWithoutHeader} />;
   }
 
   return (
-    <View style={[root, paddingTopWithoutHeader]}>
+    <View style={[screen, topWithoutHeader]}>
       <AccountCard
         data={currentAccount.data}
         balance={balance}
@@ -97,7 +96,10 @@ const SettingsScreen: FunctionComponent<Props> = props => {
         onPress={exit}
       />
 
-      <ChangeProfile bottomSheetModalRef={bottomSheetModalRef} />
+      <ChangeProfileModal
+        bottomSheetModalRef={bottomSheetModalRef}
+        close={handleCloseModal}
+      />
     </View>
   );
 };

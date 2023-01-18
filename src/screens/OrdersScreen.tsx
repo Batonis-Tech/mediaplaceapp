@@ -22,7 +22,7 @@ const OrdersScreen: FunctionComponent<Props> = props => {
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>('');
 
-  const {root, centerPosition, text_Caption1} = styles;
+  const {screen, centerPosition, text_Caption1} = styles;
 
   const {orders, currentAccount} = useTypedSelector(
     (state: AppState) => state.user,
@@ -68,10 +68,10 @@ const OrdersScreen: FunctionComponent<Props> = props => {
       )}
       keyExtractor={item => item.id}
       showsVerticalScrollIndicator={false}
-      style={root}
+      style={screen}
     />
   ) : (
-    <View style={[root, centerPosition]}>
+    <View style={[screen, centerPosition]}>
       <Text style={text_Caption1}>Нет заказов</Text>
     </View>
   );

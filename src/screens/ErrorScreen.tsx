@@ -2,15 +2,15 @@ import React, {FunctionComponent} from 'react';
 import {View, Text} from 'react-native';
 
 // styles
-import {styles, Color} from '../styles';
+import {styles} from '../styles';
 
 interface Props {}
 
-export const ErrorScreen: FunctionComponent<Props> = props => {
-  const {root, centerPosition} = styles;
+export const ErrorScreen: FunctionComponent<Props> = () => {
+  const {screen, centerPosition} = styles;
 
   return (
-    <View style={[root, centerPosition]}>
+    <View style={[screen, centerPosition]}>
       <Text>Что-то пошло не так...</Text>
     </View>
   );

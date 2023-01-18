@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, StyleProp, ViewStyle} from 'react-native';
 
 // styles
 import {Color, styles} from '../../styles';
@@ -9,6 +9,7 @@ import {indicatorColor, useMoment, formatCost} from '../../helpers';
 
 interface Props {
   orderInfo: any;
+  style?: StyleProp<ViewStyle>;
 }
 
 const Item = ({
@@ -21,7 +22,7 @@ const Item = ({
   style?: any;
 }) => {
   return (
-    <View style={[styles.between_container, style, {marginTop: 4}]}>
+    <View style={[styles.betweenContainer, style, {marginTop: 4}]}>
       <Text style={[styles.text_Body2, {color: Color.secondary_600}]}>
         {name}
       </Text>
@@ -34,7 +35,7 @@ const Item = ({
 export const OrderInfo: FunctionComponent<Props> = props => {
   const {
     orderCard,
-    between_container,
+    betweenContainer,
     //fonts
     text_Caption1,
     text_Body2,
@@ -45,7 +46,7 @@ export const OrderInfo: FunctionComponent<Props> = props => {
 
   return (
     <View style={orderCard}>
-      <View style={between_container}>
+      <View style={betweenContainer}>
         <Text style={text_Caption1}>{useMoment(orderInfo.created)}</Text>
         <Text style={text_Caption1}>{orderInfo.id}</Text>
       </View>
@@ -56,7 +57,7 @@ export const OrderInfo: FunctionComponent<Props> = props => {
         </Text>
         <Text style={text_Subtitle1}>{orderInfo.provider.name}</Text>
 
-        <View style={between_container}>
+        <View style={betweenContainer}>
           <Text style={[text_Body2, {color: Color.secondary_600}]}>
             Тип публикации
           </Text>
@@ -65,7 +66,7 @@ export const OrderInfo: FunctionComponent<Props> = props => {
         </View>
       </View>
 
-      <View style={[styles.between_container, {marginTop: 8}]}>
+      <View style={[styles.betweenContainer, {marginTop: 8}]}>
         <Text style={styles.text_Subtitle2}>Оплачено</Text>
         <Text style={styles.text_Body2}>
           {formatCost(orderInfo.total_cost)}

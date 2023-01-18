@@ -1,17 +1,24 @@
-import React, {FunctionComponent, useState, useEffect} from 'react';
-import {View} from 'react-native';
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from 'react';
+import {ScrollView} from 'react-native';
 
 // styles
 import {styles} from '../styles';
 
 // components
-import {MainButton, OrderInfo, Spinner} from '../components';
+import {MainButton, OrderInfo, Spinner, Task, TaskModal} from '../components';
 
-//
-import {SearchBar} from 'react-native-elements';
+// api
 import {useTypedSelector} from '../hooks/useTypeSelector';
 import {ApiService} from '../services';
 import {useActions} from '../hooks/useAction';
+
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
 
 interface Props {
   route?: any;
@@ -19,12 +26,24 @@ interface Props {
 
 const OrderDetailsScreen: FunctionComponent<Props> = props => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [search, setSearch] = useState<string>('');
+  const [dataModal, setDataModal] = useState<{data: {}; title: string}>({
+    data: {},
+    title: '',
+  });
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const {orderDetails} = useTypedSelector(state => state.user);
   const {getOrderDetails} = useActions();
 
-  const {root} = styles;
+  const {screen, bottomDefault} = styles;
+
+  const handlePresentModal = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    bottomSheetModalRef.current?.close();
+  }, []);
 
   const getOrderInfo = () => {
     ApiService.INSTANCE.openOrder(props.route.params.orderId).then(resp => {
@@ -42,15 +61,55 @@ const OrderDetailsScreen: FunctionComponent<Props> = props => {
   }
 
   return (
-    <View style={root}>
+    <ScrollView
+      style={[screen, bottomDefault]}
+      showsVerticalScrollIndicator={false}>
       <OrderInfo orderInfo={orderDetails} />
+
+      {orderDetails?.quill_solution && (
+        <Task
+          title="Текст публикации"
+          data={orderDetails?.quill_solution}
+          style={{marginTop: 16}}
+          onPress={() => {
+            setDataModal(prevState => ({
+              ...prevState,
+              data: orderDetails?.quill_solution,
+              title: 'Текст публикации',
+            }));
+            handlePresentModal();
+          }}
+        />
+      )}
+
+      {orderDetails?.quill_task && (
+        <Task
+          title="Задание"
+          data={orderDetails?.quill_task}
+          style={{marginTop: 16}}
+          onPress={() => {
+            setDataModal(prevState => ({
+              ...prevState,
+              data: orderDetails?.quill_task,
+              title: 'Задание',
+            }));
+            handlePresentModal();
+          }}
+        />
+      )}
 
       <MainButton
         title="Отменить заказ"
         style={{marginTop: 16}}
         onPress={() => {}}
       />
-    </View>
+
+      <TaskModal
+        bottomSheetModalRef={bottomSheetModalRef}
+        close={handleCloseModal}
+        data={dataModal}
+      />
+    </ScrollView>
   );
 };
 

@@ -75,11 +75,13 @@ export const styles = StyleSheet.create({
   },
 
   // general
-  root: {flex: 1, paddingHorizontal: 16},
-  paddingTopWithoutHeader: {paddingTop: StatusBar.currentHeight + 16},
-  paddingHorizontal: {paddingHorizontal: 16},
-  row_container: {flexDirection: 'row', alignItems: 'center'},
-  between_container: {
+  root: {flex: 1},
+  screen: {flex: 1, paddingHorizontal: 16},
+  bottomDefault: {marginBottom: 16},
+  paddingDefault: {paddingHorizontal: 16},
+  topWithoutHeader: {paddingTop: StatusBar.currentHeight + 16},
+  rowContainer: {flexDirection: 'row', alignItems: 'center'},
+  betweenContainer: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',

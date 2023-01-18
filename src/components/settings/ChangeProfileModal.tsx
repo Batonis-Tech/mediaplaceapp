@@ -11,31 +11,36 @@ import {
 // styles
 import {Color, styles} from '../../styles';
 
+// components
+import {MainButton, Spinner, HeaderModal} from '../';
+
 // api
 import {ApiService, StorageService} from '../../services';
 import {useTypedSelector} from '../../hooks/useTypeSelector';
 import {AppState} from '../../models';
 import {useActions} from '../../hooks/useAction';
 
-// other deps
-import {BottomSheetBackdrop, BottomSheetModal} from '@gorhom/bottom-sheet';
+// helpers
+import {touchOpacity} from '../../helpers';
 
 // icon
 import {Icon} from '../../utils/Icon';
-import {Account, Newspaper, Close} from '../../assets/IconSvg';
-import {MainButton} from '../MainButton';
-import {Spinner} from '../Spinner';
-import {touchOpacity} from '../../helpers';
+import {Account, Newspaper} from '../../assets/IconSvg';
+
+// other deps
+import {BottomSheetBackdrop, BottomSheetModal} from '@gorhom/bottom-sheet';
 
 interface Props {
-  style?: StyleProp<ViewStyle>;
   bottomSheetModalRef: any;
+  close: () => void;
+  style?: StyleProp<ViewStyle>;
 }
 
-export const ChangeProfile: FunctionComponent<Props> = props => {
+export const ChangeProfileModal: FunctionComponent<Props> = props => {
   const [loading, setLoading] = useState<boolean>(true);
   const [current, setCurrent] = useState<{}>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
+
   const snapPoints = useMemo(() => ['70%'], []);
 
   const {providers, userData, currentAccount} = useTypedSelector(
@@ -46,20 +51,16 @@ export const ChangeProfile: FunctionComponent<Props> = props => {
   const DATA = [{data: [userData, ...(providers?.results || [])]}];
 
   const {
-    row_container,
-    between_container,
+    root,
+    rowContainer,
     centerPosition,
-    paddingHorizontal,
+    paddingDefault,
+    bottomDefault,
     separator,
     accountIcon,
     text_Subtitle1,
     text_Body2,
-    text_H4,
   } = styles;
-
-  const close = () => {
-    props.bottomSheetModalRef.current?.close();
-  };
 
   useEffect(() => {
     setLoading(true);
@@ -74,14 +75,14 @@ export const ChangeProfile: FunctionComponent<Props> = props => {
 
     saveProfileInfo({data: current, role: role()});
     StorageService.INSTANCE.setProfileInfo(current, role());
-    close();
+    props.close();
   };
 
   const Item = ({item, index, onPress}) => {
     return (
       <TouchableOpacity
         style={[
-          row_container,
+          rowContainer,
           {
             padding: 16,
             backgroundColor:
@@ -129,19 +130,13 @@ export const ChangeProfile: FunctionComponent<Props> = props => {
       {loading ? (
         <Spinner />
       ) : (
-        <View style={{flex: 1, marginBottom: 16}}>
-          <View style={[between_container, paddingHorizontal]}>
-            <Text style={text_H4}>Смена профиля</Text>
-
-            <TouchableOpacity onPress={close} activeOpacity={touchOpacity}>
-              <Icon iconName={Close} size={24} fill={Color.secondary_500} />
-            </TouchableOpacity>
-          </View>
+        <View style={[bottomDefault, root]}>
+          <HeaderModal title="Смена профиля" close={props.close} />
 
           <SectionList
             sections={DATA}
             keyExtractor={(item, index) => item + index}
-            style={{flex: 1, marginTop: 16}}
+            style={[root, {marginTop: 16}]}
             renderItem={({item, index}) => (
               <Item
                 item={item}
@@ -155,9 +150,9 @@ export const ChangeProfile: FunctionComponent<Props> = props => {
             ItemSeparatorComponent={() => <View style={separator} />}
           />
 
-          <View style={paddingHorizontal}>
+          <View style={paddingDefault}>
             <MainButton
-              title="11"
+              title="Сменить профиль"
               onPress={() => submitChange()}
               color={
                 currentIndex !== -1 ? Color.primary_500 : Color.primary_050

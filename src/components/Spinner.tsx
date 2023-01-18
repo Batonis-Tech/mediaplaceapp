@@ -10,12 +10,12 @@ interface Props {
 }
 
 export const Spinner: FunctionComponent<Props> = props => {
-  const {root} = styles;
+  const {screen, root} = styles;
 
   return (
-    <View style={[root, props.style]}>
+    <View style={[screen, props.style]}>
       <ActivityIndicator
-        style={{flex: 1}}
+        style={root}
         size="large"
         color={props.color || Color.secondary_400}
       />
