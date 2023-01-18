@@ -33,7 +33,7 @@ export const SkeletonComponent: FunctionComponent<Props> = props => {
   const Content = () => {
     switch (props.type) {
       case 'OrdersScreen': {
-        return data(7, 90).map((item, index) => {
+        return data(8, 90).map((item, index) => {
           return (
             <>
               <SkeletonItem height={item.height} />

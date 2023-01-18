@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useMemo} from 'react';
-import {StyleProp, ViewStyle, View} from 'react-native';
+import {StyleProp, ViewStyle, View, ScrollView} from 'react-native';
 
 // styles
 import {styles} from '../../styles';
@@ -8,7 +8,11 @@ import {styles} from '../../styles';
 import {HeaderModal} from '../';
 
 // other deps
-import {BottomSheetBackdrop, BottomSheetModal} from '@gorhom/bottom-sheet';
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetScrollView,
+} from '@gorhom/bottom-sheet';
 import RenderHtml from 'react-native-render-html';
 
 interface Props {
@@ -19,7 +23,7 @@ interface Props {
 }
 
 export const TaskModal: FunctionComponent<Props> = props => {
-  const snapPoints = useMemo(() => ['40%'], []);
+  const snapPoints = useMemo(() => ['80%'], []);
 
   const {paddingDefault} = styles;
 
@@ -42,9 +46,9 @@ export const TaskModal: FunctionComponent<Props> = props => {
       )}>
       <HeaderModal title={props.data.title} close={props.close} />
 
-      <View style={paddingDefault}>
+      <BottomSheetScrollView style={paddingDefault}>
         <RenderHtml source={source} />
-      </View>
+      </BottomSheetScrollView>
     </BottomSheetModal>
   );
 };
