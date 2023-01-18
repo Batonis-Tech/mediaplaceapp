@@ -14,13 +14,13 @@ export const ApiEndpoints = {
   GetProviders: Url('/api/v1/providers/my'),
 
   GetBillMy: Url('/api/v1/billing/account/my'),
-  GetBillProvider: (id: string) => Url(`/api/v1/billing/account/my?${id}`),
+  GetBillProvider: (id: string) =>
+    Url(`/api/v1/billing/account/my?provider_id=${id}`),
 
   GetOrdersMy: (id: string) => Url(`/api/v1/products/orders/?user=${id}`),
   GetOrdersProvider: (id: string) =>
     Url(`/api/v1/products/orders/?provider=${id}`),
 
   GetOrderDetails: (id: string) => Url(`/api/v1/products/orders/${id}?`),
-
   // search
 } as const;

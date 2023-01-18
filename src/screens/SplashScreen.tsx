@@ -12,11 +12,10 @@ interface Props {}
 
 export const SplashScreen: FunctionComponent<Props> = props => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [art, setArt] = useState([]);
 
   const {root, centerPosition} = styles;
 
-  const {navigateAction, saveUserInfo} = useActions();
+  const {navigateAction, saveUserInfo, saveProfileInfo} = useActions();
 
   const tryToLogIn = () => {
     console.log('tryToLogIn');
@@ -24,18 +23,24 @@ export const SplashScreen: FunctionComponent<Props> = props => {
 
     StorageService.INSTANCE.getAuthToken().then(data => {
       console.log('AuthToken', data);
+
       if (data === null) {
         navigateAction(ReduxType.AUTH);
       } else {
-        ApiService.INSTANCE.getUserInfo()
+        StorageService.INSTANCE.getProfileInfo()
           .then(resp => {
-            saveUserInfo(resp);
+            if (resp?.role === 'platform') {
+              ApiService.INSTANCE.getUserInfo().then(resp =>
+                saveUserInfo(resp),
+              );
+            }
+
+            saveProfileInfo({data: resp?.data, role: resp?.role});
             navigateAction(ReduxType.MAIN);
           })
           .finally(() => setLoading(false));
       }
     });
-    // .finally(() => setLoading(false));
   };
 
   useEffect(tryToLogIn, []);

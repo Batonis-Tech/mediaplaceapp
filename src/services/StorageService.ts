@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 const keys = {
   AUTH: 'AUTH',
-  USER_INFO: 'USER_INFO',
+  PROFILE_INFO: 'PROFILE_INFO',
 };
 
 export class StorageService {
@@ -20,8 +20,12 @@ export class StorageService {
     return StorageService.setObject(keys.AUTH, null);
   }
 
-  setUserInfo(token: string): Promise<void> {
-    return StorageService.setObject(keys.USER_INFO, token);
+  setProfileInfo(data: any, role: 'user' | 'platform'): Promise<T> {
+    return StorageService.setObject(keys.PROFILE_INFO, {data, role});
+  }
+
+  getProfileInfo(): Promise<void | null> {
+    return StorageService.getObject(keys.PROFILE_INFO);
   }
 
   // base function

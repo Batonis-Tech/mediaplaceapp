@@ -10,6 +10,7 @@ import {useMoment} from '../../helpers';
 
 interface Props {
   order: any;
+  role: string;
   onPress: () => void;
   style?: StyleProp<ViewStyle>;
 }
@@ -39,7 +40,7 @@ export const OrdersCard: FunctionComponent<Props> = props => {
 
       <View style={[between_container, {marginTop: 2}]}>
         <Text style={[text_Subtitle1, {marginRight: 16, flex: 1}]}>
-          {order.provider.name}
+          {props.role === 'user' ? order.provider.name : order.user.name}
         </Text>
 
         <Text style={text_Body2}>{formatCost(order.total_cost)}</Text>

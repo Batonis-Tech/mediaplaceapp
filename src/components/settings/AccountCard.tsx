@@ -12,9 +12,10 @@ import {Notes, Account, Newspaper, DownArrow} from '../../assets/IconSvg';
 import {touchOpacity} from '../../helpers';
 
 interface Props {
-  data: {};
+  data: any;
+  balance: any;
   style?: StyleProp<ViewStyle>;
-  status?: string;
+  onPress: () => void;
 }
 
 export const AccountCard: FunctionComponent<Props> = props => {
@@ -33,15 +34,21 @@ export const AccountCard: FunctionComponent<Props> = props => {
         <Icon iconName={Newspaper} size={20} fill={Color.secondary_900} />
       </View>
 
-      <View style={{marginLeft: 16}}>
-        <TouchableOpacity style={row_container} activeOpacity={touchOpacity}>
+      <View>
+        <TouchableOpacity
+          style={row_container}
+          activeOpacity={touchOpacity}
+          onPress={() => props.onPress()}>
           <Text style={text_Subtitle1}>{props.data.name}</Text>
           <Icon iconName={DownArrow} size={20} fill={Color.secondary_900} />
         </TouchableOpacity>
 
         <Text style={[text_Body2, {color: Color.secondary_600}]}>
           На счете
-          <Text style={{color: Color.secondary_900}}> 5 000 ₽</Text>
+          <Text style={{color: Color.secondary_900}}>
+            {' '}
+            {props.balance?.balance}
+          </Text>
         </Text>
       </View>
     </View>

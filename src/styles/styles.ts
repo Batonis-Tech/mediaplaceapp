@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
   // fonts
   text_H4: {
     fontFamily: Fonts.bold,
-    fontfontSize: 20,
+    fontSize: 20,
     lineHeight: 26,
     letterSpacing: 0.15,
     color: Color.secondary_900,
@@ -77,6 +77,7 @@ export const styles = StyleSheet.create({
   // general
   root: {flex: 1, paddingHorizontal: 16},
   paddingTopWithoutHeader: {paddingTop: StatusBar.currentHeight + 16},
+  paddingHorizontal: {paddingHorizontal: 16},
   row_container: {flexDirection: 'row', alignItems: 'center'},
   between_container: {
     width: '100%',
@@ -111,6 +112,12 @@ export const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     backgroundColor: Color.secondary_100,
+    marginRight: 16,
+  },
+  separator: {
+    marginLeft: 64,
+    borderBottomWidth: 1,
+    borderBottomColor: Color.secondary_200,
   },
 
   // input

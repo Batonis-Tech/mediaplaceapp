@@ -12,6 +12,7 @@ import {Notes, Setting} from '../assets/IconSvg';
 
 // nav
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,10 +43,17 @@ export const MainNavigator = () => {
       <Tab.Screen
         name="OrdersNav"
         component={OrdersNav}
-        options={{
+        options={({route}) => ({
           tabBarIcon: ({focused}) => getIcon(Notes, focused),
           tabBarLabel: 'Заказы',
-        }}
+          tabBarStyle: (route => {
+            const routeName = getFocusedRouteNameFromRoute(route) ?? '';
+            if (routeName === 'OrderDetailsScreen') {
+              return {display: 'none'};
+            }
+            return;
+          })(route),
+        })}
       />
 
       <Tab.Screen

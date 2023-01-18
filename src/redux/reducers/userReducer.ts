@@ -1,10 +1,12 @@
 import {Action, AuthState, ReduxType} from '../../models';
 
 const initState: AuthState = {
-  user: {},
-  providers: {},
+  userData: {},
+  currentAccount: {role: 'user', data: null},
+  balance: null,
+  providers: null,
   orders: [],
-  openOrder: {},
+  orderDetails: {},
   access_token: '',
   refresh_token: '',
 };
@@ -12,11 +14,17 @@ const initState: AuthState = {
 export const userReducer = (state = initState, action: Action): AuthState => {
   switch (action.type) {
     case ReduxType.GET_ME:
-      return {...state, user: action.payload};
+      return {...state, userData: action.payload};
+    case ReduxType.GET_PROFILE:
+      return {...state, currentAccount: action.payload};
+    case ReduxType.GET_BALANCE:
+      return {...state, balance: action.payload};
+    case ReduxType.GET_PROVIDERS:
+      return {...state, providers: action.payload};
     case ReduxType.GET_ORDERS:
       return {...state, orders: action.payload};
     case ReduxType.GET_ORDERS_DETAILS:
-      return {...state, openOrder: action.payload};
+      return {...state, orderDetails: action.payload};
     default:
       return state;
   }

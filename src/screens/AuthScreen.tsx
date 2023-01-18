@@ -4,7 +4,7 @@ import {View} from 'react-native';
 // api
 import {ReduxType} from '../models';
 import {useActions} from '../hooks/useAction';
-import {ApiService} from '../services';
+import {ApiService, StorageService} from '../services';
 
 // styles
 import {Color, styles} from '../styles';
@@ -19,7 +19,6 @@ import {Logo} from '../assets/LogoSvg';
 interface Props {}
 
 export const AuthScreen: FunctionComponent<Props> = () => {
-  const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<{}>({email: '', password: ''});
@@ -28,7 +27,8 @@ export const AuthScreen: FunctionComponent<Props> = () => {
     password: false,
   });
 
-  const {navigateAction, loadingAction, saveUserInfo} = useActions();
+  const {navigateAction, loadingAction, saveUserInfo, saveProfileInfo} =
+    useActions();
 
   const {root, centerPosition} = styles;
 
@@ -56,11 +56,6 @@ export const AuthScreen: FunctionComponent<Props> = () => {
     return errorFound;
   };
 
-  const mainLoading = (show: boolean) => {
-    loadingAction(show);
-    setLoading(show);
-  };
-
   const Submit = async () => {
     let errorFound = verify();
 
@@ -68,11 +63,14 @@ export const AuthScreen: FunctionComponent<Props> = () => {
       return;
     }
 
-    mainLoading(true);
+    loadingAction(true);
 
     ApiService.INSTANCE.login(email!!.trim(), password!!.trim())
       .then(resp => {
+        console.log('login', resp);
         saveUserInfo(resp);
+        saveProfileInfo({data: resp, role: 'user'});
+        StorageService.INSTANCE.setProfileInfo(resp, 'user');
         navigateAction(ReduxType.MAIN);
       })
       .catch(e => {
@@ -82,7 +80,7 @@ export const AuthScreen: FunctionComponent<Props> = () => {
         });
         // errorResponse();
       })
-      .finally(() => mainLoading(false));
+      .finally(() => loadingAction(false));
   };
 
   return (
@@ -115,7 +113,7 @@ export const AuthScreen: FunctionComponent<Props> = () => {
       <MainButton
         title="Войти"
         style={{marginTop: 24}}
-        color={!loading ? Color.primary_500 : Color.primary_050}
+        color={Color.primary_500}
         onPress={Submit}
         focus={focus.email || focus.password}
       />

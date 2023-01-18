@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import {ScrollView, View} from 'react-native';
+import {FlatList, View} from 'react-native';
 
 // styles
 import {styles} from '../styles';
@@ -22,54 +22,58 @@ const OrdersScreen: FunctionComponent<Props> = props => {
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>('');
 
-  const {root} = styles;
+  const {root, centerPosition, text_Caption1} = styles;
 
-  const {orders, user} = useTypedSelector((state: AppState) => state.user);
+  const {orders, currentAccount} = useTypedSelector(
+    (state: AppState) => state.user,
+  );
   const {getOrders, errorResponse} = useActions();
+
+  const currentResponse = () => {
+    return currentAccount.role === 'user'
+      ? ApiService.INSTANCE.getOrdersUser(currentAccount.data?.id)
+      : ApiService.INSTANCE.getOrdersProvider(currentAccount.data?.id);
+  };
 
   useEffect(() => {
     setLoading(true);
 
-    ApiService.INSTANCE.getGetOrdersUser(user.id)
-      .then(resp => {
-        getOrders(resp.results);
-      })
+    currentResponse()
+      .then(resp => getOrders(resp.results))
       .catch(error => {
-        console.log('error', error);
+        console.log('getOrders error', error);
         errorResponse();
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [currentAccount.data?.id]);
 
   if (loading) {
     return <SkeletonComponent type="OrdersScreen" />;
   }
 
-  return (
-    <ScrollView style={root} showsVerticalScrollIndicator={false}>
-      {/* <SearchBar
-        placeholder="Type Here..."
-        onChangeText={(text: string) => setSearch(text)}
-        value={search}
-        lightTheme={true}
-      /> */}
-
-      {orders?.map((item: any, index: number) => {
-        return (
-          <View key={index}>
-            <OrdersCard
-              order={item}
-              onPress={() => {
-                props.navigation.navigate('OrderDetailsScreen', {
-                  orderId: item.id,
-                });
-              }}
-              style={{marginTop: 12}}
-            />
-          </View>
-        );
-      })}
-    </ScrollView>
+  return orders?.length !== 0 ? (
+    <FlatList
+      data={orders}
+      renderItem={({item}) => (
+        <OrdersCard
+          order={item}
+          role={currentAccount.role}
+          onPress={() => {
+            props.navigation.navigate('OrderDetailsScreen', {
+              orderId: item.id,
+            });
+          }}
+          style={{marginBottom: 12}}
+        />
+      )}
+      keyExtractor={item => item.id}
+      showsVerticalScrollIndicator={false}
+      style={root}
+    />
+  ) : (
+    <View style={[root, centerPosition]}>
+      <Text style={text_Caption1}>Нет заказов</Text>
+    </View>
   );
 };
 

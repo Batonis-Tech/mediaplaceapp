@@ -10,11 +10,25 @@ export interface Action {
   payload?: any;
 }
 
+export interface ProfileInfo {
+  data: {};
+  role: 'user' | 'platform';
+}
+
 export interface AuthState {
-  user: {};
-  providers: {};
+  userData: {};
+  currentAccount: {
+    role: 'user' | 'platform';
+    data: {
+      id: number | undefined;
+    };
+  };
+  balance: {} | null;
+  providers: {
+    result: any;
+  };
   orders: any;
-  openOrder: {};
+  orderDetails: {};
   access_token: string;
   refresh_token: string;
 }

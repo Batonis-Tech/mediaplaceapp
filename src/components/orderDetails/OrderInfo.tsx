@@ -11,7 +11,15 @@ interface Props {
   orderInfo: any;
 }
 
-const Item = ({name, price, style}) => {
+const Item = ({
+  name,
+  price,
+  style,
+}: {
+  name: string;
+  price: string;
+  style?: any;
+}) => {
   return (
     <View style={[styles.between_container, style, {marginTop: 4}]}>
       <Text style={[styles.text_Body2, {color: Color.secondary_600}]}>
