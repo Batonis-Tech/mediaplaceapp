@@ -28,7 +28,7 @@ export const Task: FunctionComponent<Props> = props => {
 
   return (
     <TouchableOpacity
-      style={[orderCard, props.style]}
+      style={[orderCard, props.style, {height: 140}]}
       activeOpacity={touchOpacity}
       onPress={props.onPress}>
       <View style={betweenContainer}>

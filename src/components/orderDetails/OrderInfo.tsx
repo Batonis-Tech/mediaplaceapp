@@ -45,7 +45,7 @@ export const OrderInfo: FunctionComponent<Props> = props => {
   const {orderInfo} = props;
 
   return (
-    <View style={orderCard}>
+    <View style={[orderCard, props.style]}>
       <View style={betweenContainer}>
         <Text style={text_Caption1}>{useMoment(orderInfo.created)}</Text>
         <Text style={text_Caption1}>{orderInfo.id}</Text>

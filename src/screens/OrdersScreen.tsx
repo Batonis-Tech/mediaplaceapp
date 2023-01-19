@@ -16,7 +16,9 @@ import {useTypedSelector} from '../hooks/useTypeSelector';
 import {ApiService} from '../services';
 import {AppState} from '../models';
 
-interface Props {}
+interface Props {
+  navigation?: any;
+}
 
 const OrdersScreen: FunctionComponent<Props> = props => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -60,7 +62,7 @@ const OrdersScreen: FunctionComponent<Props> = props => {
           role={currentAccount.role}
           onPress={() => {
             props.navigation.navigate('OrderDetailsScreen', {
-              orderId: item.id,
+              order: item,
             });
           }}
           style={{marginBottom: 12}}

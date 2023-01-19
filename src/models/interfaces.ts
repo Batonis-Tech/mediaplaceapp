@@ -16,11 +16,19 @@ export interface ProfileInfo {
 }
 
 export interface AuthState {
-  userData: {};
+  userData: {
+    id: number | undefined;
+    chat_user_id: string;
+    name: string;
+    chat_token: string;
+  };
   currentAccount: {
     role: 'user' | 'platform';
     data: {
       id: number | undefined;
+      chat_user_id: string;
+      name: string;
+      chat_token: string;
     };
   };
   balance: {} | null;

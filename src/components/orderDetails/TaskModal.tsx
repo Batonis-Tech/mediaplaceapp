@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useMemo} from 'react';
-import {StyleProp, ViewStyle, View, ScrollView} from 'react-native';
+import {StyleProp, ViewStyle} from 'react-native';
 
 // styles
 import {styles} from '../../styles';
@@ -25,7 +25,7 @@ interface Props {
 export const TaskModal: FunctionComponent<Props> = props => {
   const snapPoints = useMemo(() => ['80%'], []);
 
-  const {paddingDefault} = styles;
+  const {root, paddingDefault} = styles;
 
   const source = {
     html: props.data?.data,
@@ -47,7 +47,7 @@ export const TaskModal: FunctionComponent<Props> = props => {
       <HeaderModal title={props.data.title} close={props.close} />
 
       <BottomSheetScrollView style={paddingDefault}>
-        <RenderHtml source={source} />
+        <RenderHtml source={source} contentWidth={200} />
       </BottomSheetScrollView>
     </BottomSheetModal>
   );

@@ -5,7 +5,7 @@ import React, {
   useRef,
   useCallback,
 } from 'react';
-import {ScrollView} from 'react-native';
+import {Pressable, ScrollView} from 'react-native';
 
 // styles
 import {styles} from '../styles';
@@ -18,10 +18,16 @@ import {useTypedSelector} from '../hooks/useTypeSelector';
 import {ApiService} from '../services';
 import {useActions} from '../hooks/useAction';
 
+// other deps
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
+
+// icons
+import {Chat} from '../assets/IconSvg';
+import {Icon} from '../utils/Icon';
 
 interface Props {
   route?: any;
+  navigation?: any;
 }
 
 const OrderDetailsScreen: FunctionComponent<Props> = props => {
@@ -46,7 +52,7 @@ const OrderDetailsScreen: FunctionComponent<Props> = props => {
   }, []);
 
   const getOrderInfo = () => {
-    ApiService.INSTANCE.openOrder(props.route.params.orderId).then(resp => {
+    ApiService.INSTANCE.openOrder(props.route.params.order.id).then(resp => {
       getOrderDetails(resp);
       setLoading(false);
     });
@@ -55,6 +61,21 @@ const OrderDetailsScreen: FunctionComponent<Props> = props => {
   useEffect(() => {
     getOrderInfo();
   }, []);
+
+  useEffect(() => {
+    props.navigation.setOptions({
+      headerRight: () => (
+        <Pressable
+          onPress={() =>
+            props.navigation.navigate('StreamChatScreen', {
+              order: props.route.params.order,
+            })
+          }>
+          <Icon iconName={Chat} />
+        </Pressable>
+      ),
+    });
+  }, [props.navigation]);
 
   if (loading) {
     return <Spinner />;

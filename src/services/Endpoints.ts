@@ -4,6 +4,8 @@ export const CLIENT_ID = 'HQhhKyRwRuSEhU5NrD9Hfco94ciyNCh1RWWKhiTG';
 export const CLIENT_SECRET =
   'IvndcDE7i6ejCwxkovduOgeGZtQuJMHf1DKzaAdQugIS6xxxR8BpqgroHdwcPERLM8lNo79VoVD1OywntVXp7NQIy5stNN2AxfMqmEvgiArN12ghVTVJnlHZIEL6x0Uz';
 
+export const clientIdForChat = 'tk3er9ueepmy';
+
 export function Url(url: string): string {
   return `${API_URI}${url}`;
 }

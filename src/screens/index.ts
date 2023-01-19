@@ -4,3 +4,4 @@ export * from './AuthScreen';
 export * from './OrderDetailsScreen';
 export * from './SplashScreen';
 export * from './ErrorScreen';
+export * from './StreamChat';

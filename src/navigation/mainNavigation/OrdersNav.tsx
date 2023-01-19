@@ -5,8 +5,11 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {styles, Color} from '../../styles';
 
 // screens
-import {OrdersScreen, OrderDetailsScreen} from '../../screens';
-import {Text} from 'react-native-elements';
+import {
+  OrdersScreen,
+  OrderDetailsScreen,
+  StreamChatScreen,
+} from '../../screens';
 
 // icons
 import {Icon} from '../../utils/Icon';
@@ -35,6 +38,11 @@ export const OrdersNav = () => (
       name="OrderDetailsScreen"
       component={OrderDetailsScreen}
       options={{title: 'Детали заказа'}}
+    />
+    <Stack.Screen
+      name="StreamChatScreen"
+      component={StreamChatScreen}
+      options={{headerStyle: {backgroundColor: Color.white}}}
     />
   </Stack.Navigator>
 );

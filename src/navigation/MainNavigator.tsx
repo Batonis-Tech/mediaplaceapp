@@ -48,7 +48,10 @@ export const MainNavigator = () => {
           tabBarLabel: 'Заказы',
           tabBarStyle: (route => {
             const routeName = getFocusedRouteNameFromRoute(route) ?? '';
-            if (routeName === 'OrderDetailsScreen') {
+            if (
+              routeName === 'OrderDetailsScreen' ||
+              routeName === 'StreamChatScreen'
+            ) {
               return {display: 'none'};
             }
             return;

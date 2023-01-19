@@ -9,21 +9,24 @@ import {store} from './src/redux/store';
 // nav
 import {AppNavigator} from './src/navigation/AppNavigator';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {OverlayProvider} from 'stream-chat-react-native';
 
 const App = () => {
   return (
     <Provider store={store}>
       <GestureHandlerRootView style={{flex: 1}}>
-        <BottomSheetModalProvider>
-          <StatusBar
-            backgroundColor="transparent"
-            barStyle="dark-content"
-            translucent
-            animated={true}
-          />
+        <OverlayProvider>
+          <BottomSheetModalProvider>
+            <StatusBar
+              backgroundColor="transparent"
+              barStyle="dark-content"
+              translucent
+              animated={true}
+            />
 
-          <AppNavigator />
-        </BottomSheetModalProvider>
+            <AppNavigator />
+          </BottomSheetModalProvider>
+        </OverlayProvider>
       </GestureHandlerRootView>
     </Provider>
   );
