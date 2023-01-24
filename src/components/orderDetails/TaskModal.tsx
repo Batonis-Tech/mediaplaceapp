@@ -46,7 +46,9 @@ export const TaskModal: FunctionComponent<Props> = props => {
       )}>
       <HeaderModal title={props.data.title} close={props.close} />
 
-      <BottomSheetScrollView style={paddingDefault}>
+      <BottomSheetScrollView
+        style={paddingDefault}
+        showsVerticalScrollIndicator={false}>
         <RenderHtml source={source} contentWidth={200} />
       </BottomSheetScrollView>
     </BottomSheetModal>

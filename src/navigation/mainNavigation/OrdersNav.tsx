@@ -17,6 +17,8 @@ import {Research} from '../../assets/IconSvg';
 
 const Stack = createStackNavigator();
 
+const headerRightContainerStyle = {paddingRight: 16};
+
 export const OrdersNav = () => (
   <Stack.Navigator
     initialRouteName="OrdersScreen"
@@ -32,12 +34,16 @@ export const OrdersNav = () => (
         headerRight: () => {
           return <Icon iconName={Research} />;
         },
+        headerRightContainerStyle: headerRightContainerStyle,
       }}
     />
     <Stack.Screen
       name="OrderDetailsScreen"
       component={OrderDetailsScreen}
-      options={{title: 'Детали заказа'}}
+      options={{
+        title: 'Детали заказа',
+        headerRightContainerStyle: headerRightContainerStyle,
+      }}
     />
     <Stack.Screen
       name="StreamChatScreen"
