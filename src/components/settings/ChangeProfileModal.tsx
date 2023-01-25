@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useEffect, useMemo, useState} from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import {
   Text,
   StyleProp,
@@ -21,14 +21,19 @@ import {AppState} from '../../models';
 import {useActions} from '../../hooks/useAction';
 
 // helpers
-import {touchOpacity} from '../../helpers';
+import {statusIndicatorColor, touchOpacity} from '../../helpers';
 
 // icon
 import {Icon} from '../../utils/Icon';
 import {Account, Newspaper} from '../../assets/IconSvg';
 
 // other deps
-import {BottomSheetBackdrop, BottomSheetModal} from '@gorhom/bottom-sheet';
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  useBottomSheetDynamicSnapPoints,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
 
 interface Props {
   bottomSheetModalRef: any;
@@ -41,7 +46,13 @@ export const ChangeProfileModal: FunctionComponent<Props> = props => {
   const [current, setCurrent] = useState<{}>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
 
-  const snapPoints = useMemo(() => ['70%'], []);
+  const snapPoints = React.useMemo(() => ['CONTENT_HEIGHT'], []);
+  const {
+    animatedHandleHeight,
+    animatedSnapPoints,
+    animatedContentHeight,
+    handleContentLayout,
+  } = useBottomSheetDynamicSnapPoints(snapPoints);
 
   const {providers, userData, currentAccount} = useTypedSelector(
     (state: AppState) => state.user,
@@ -55,6 +66,7 @@ export const ChangeProfileModal: FunctionComponent<Props> = props => {
     rowContainer,
     centerPosition,
     paddingDefault,
+    paddingHorizontalDefault,
     bottomDefault,
     separator,
     accountIcon,
@@ -62,11 +74,26 @@ export const ChangeProfileModal: FunctionComponent<Props> = props => {
     text_Body2,
   } = styles;
 
+  const initialCurrentIndex = () => {
+    if (currentAccount.role === 'user') {
+      setCurrentIndex(0);
+    } else {
+      let num = providers?.results.findIndex(
+        (elem: any) => elem.name === currentAccount.data.name,
+      );
+      setCurrentIndex(num + 1);
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
 
     ApiService.INSTANCE.getProviders()
-      .then(resp => getProviders(resp))
+      .then(resp => {
+        getProviders(resp);
+
+        initialCurrentIndex();
+      })
       .finally(() => setLoading(false));
   }, [currentAccount.data?.id]);
 
@@ -83,8 +110,8 @@ export const ChangeProfileModal: FunctionComponent<Props> = props => {
       <TouchableOpacity
         style={[
           rowContainer,
+          paddingDefault,
           {
-            padding: 16,
             backgroundColor:
               currentIndex === index ? Color.secondary_050 : undefined,
           },
@@ -102,7 +129,10 @@ export const ChangeProfileModal: FunctionComponent<Props> = props => {
         <View>
           <Text style={text_Subtitle1}>{item.name}</Text>
           {item.status && item.status !== 'Активно' && (
-            <Text style={text_Body2}>{item.status}</Text>
+            <Text
+              style={[text_Body2, {color: statusIndicatorColor(item.status)}]}>
+              {item.status}
+            </Text>
           )}
         </View>
       </TouchableOpacity>
@@ -112,9 +142,10 @@ export const ChangeProfileModal: FunctionComponent<Props> = props => {
   return (
     <BottomSheetModal
       ref={props.bottomSheetModalRef}
-      index={0}
-      snapPoints={snapPoints}
+      snapPoints={animatedSnapPoints}
       handleIndicatorStyle={{height: 0}}
+      handleHeight={animatedHandleHeight}
+      contentHeight={animatedContentHeight}
       backdropComponent={props => (
         <BottomSheetBackdrop
           {...props}
@@ -123,44 +154,46 @@ export const ChangeProfileModal: FunctionComponent<Props> = props => {
         />
       )}
       onChange={index => {
-        if (index === 0) {
-          setCurrentIndex(-1);
+        if (index === -1) {
+          initialCurrentIndex();
         }
       }}>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <View style={[bottomDefault, root]}>
-          <HeaderModal title="Смена профиля" close={props.close} />
+      <BottomSheetView onLayout={handleContentLayout}>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <View style={[bottomDefault, root]}>
+            <HeaderModal title="Смена профиля" close={props.close} />
 
-          <SectionList
-            sections={DATA}
-            keyExtractor={(item, index) => item + index}
-            style={[root, {marginTop: 16}]}
-            renderItem={({item, index}) => (
-              <Item
-                item={item}
-                index={index}
-                onPress={() => {
-                  setCurrent(item);
-                  setCurrentIndex(index);
-                }}
-              />
-            )}
-            ItemSeparatorComponent={() => <View style={separator} />}
-          />
-
-          <View style={paddingDefault}>
-            <MainButton
-              title="Сменить профиль"
-              onPress={() => submitChange()}
-              color={
-                currentIndex !== -1 ? Color.primary_500 : Color.primary_050
-              }
+            <SectionList
+              sections={DATA}
+              keyExtractor={(item, index) => item + index}
+              style={[root, {marginVertical: 16}]}
+              renderItem={({item, index}) => (
+                <Item
+                  item={item}
+                  index={index}
+                  onPress={() => {
+                    setCurrent(item);
+                    setCurrentIndex(index);
+                  }}
+                />
+              )}
+              ItemSeparatorComponent={() => <View style={separator} />}
             />
+
+            <View style={paddingHorizontalDefault}>
+              <MainButton
+                title="Сменить профиль"
+                onPress={submitChange}
+                color={
+                  currentIndex !== -1 ? Color.primary_500 : Color.primary_050
+                }
+              />
+            </View>
           </View>
-        </View>
-      )}
+        )}
+      </BottomSheetView>
     </BottomSheetModal>
   );
 };

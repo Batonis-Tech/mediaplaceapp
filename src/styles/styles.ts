@@ -78,7 +78,8 @@ export const styles = StyleSheet.create({
   root: {flex: 1},
   screen: {flex: 1, paddingHorizontal: 16},
   bottomDefault: {marginBottom: 16},
-  paddingDefault: {paddingHorizontal: 16},
+  paddingDefault: {padding: 16},
+  paddingHorizontalDefault: {paddingHorizontal: 16},
   topWithoutHeader: {paddingTop: StatusBar.currentHeight + 16},
   rowContainer: {flexDirection: 'row', alignItems: 'center'},
   betweenContainer: {
@@ -91,6 +92,11 @@ export const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  buttonOnKeyboard: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
   },
 
   // orders

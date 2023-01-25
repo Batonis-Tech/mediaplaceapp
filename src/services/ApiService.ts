@@ -60,7 +60,7 @@ export class ApiService {
     );
   }
 
-  getProviders(): Promise<void> {
+  getProviders(): Promise<T> {
     return BaseApiService.INSTANCE.get(ApiEndpoints.GetProviders).then(
       resp => resp,
     );
@@ -77,5 +77,12 @@ export class ApiService {
     return BaseApiService.INSTANCE.get(ApiEndpoints.GetBillProvider(id)).then(
       resp => resp,
     );
+  }
+
+  // general
+  getOrderAction(id: string, action: string): Promise<void> {
+    return BaseApiService.INSTANCE.get(ApiEndpoints.OrderAction(id, action))
+      .then(resp => resp)
+      .catch(error => console.log(error));
   }
 }

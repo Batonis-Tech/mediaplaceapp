@@ -30,9 +30,12 @@ export const AuthScreen: FunctionComponent<Props> = () => {
   const {navigateAction, loadingAction, saveUserInfo, saveProfileInfo} =
     useActions();
 
-  const {screen, centerPosition} = styles;
+  const {root, screen, centerPosition, buttonOnKeyboard} = styles;
+
+  const focusBtn = focus.email || focus.password;
 
   const verify = () => {
+    setFocus(prevState => ({...prevState, password: false, email: false}));
     setError({
       email: '',
       password: '',
@@ -84,39 +87,57 @@ export const AuthScreen: FunctionComponent<Props> = () => {
   };
 
   return (
-    <View style={[screen, centerPosition]}>
-      <Icon iconName={Logo} width={185} height={25} />
+    <View style={root}>
+      <View style={[screen, centerPosition]}>
+        <Icon iconName={Logo} width={185} height={25} />
 
-      <View style={{marginTop: 40, width: '100%'}}>
-        <InputForm
-          placeholder="Введите email"
-          textContentType="emailAddress"
-          value={email}
-          errorMessage={error.email}
-          onChangeText={val => setEmail(val)}
-          onFocus={() => setFocus(prevState => ({...prevState, email: true}))}
-        />
+        <View style={{marginTop: 40, width: '100%'}}>
+          <InputForm
+            placeholder="Введите email"
+            textContentType="emailAddress"
+            value={email}
+            errorMessage={error.email}
+            onChangeText={val => setEmail(val)}
+            onFocus={() => setFocus(prevState => ({...prevState, email: true}))}
+            onBlur={() => setFocus(prevState => ({...prevState, email: false}))}
+          />
 
-        <InputForm
-          placeholder="Введите пароль"
-          style={{marginTop: 16}}
-          textContentType="password"
-          value={password}
-          errorMessage={error.password}
-          onChangeText={val => setPassword(val)}
-          onFocus={() =>
-            setFocus(prevState => ({...prevState, password: true}))
-          }
-        />
+          <InputForm
+            placeholder="Введите пароль"
+            style={{marginTop: 16}}
+            textContentType="password"
+            value={password}
+            errorMessage={error.password}
+            onChangeText={val => setPassword(val)}
+            onFocus={() =>
+              setFocus(prevState => ({...prevState, password: true}))
+            }
+            onBlur={() =>
+              setFocus(prevState => ({...prevState, password: false}))
+            }
+          />
+        </View>
+
+        {!focusBtn && (
+          <MainButton
+            title="Войти"
+            style={{marginTop: 24}}
+            color={Color.primary_500}
+            onPress={Submit}
+          />
+        )}
       </View>
 
-      <MainButton
-        title="Войти"
-        style={{marginTop: 24}}
-        color={Color.primary_500}
-        onPress={Submit}
-        focus={focus.email || focus.password}
-      />
+      {focusBtn && (
+        <View style={buttonOnKeyboard}>
+          <MainButton
+            title="Войти"
+            color={Color.primary_500}
+            onPress={Submit}
+            focus={true}
+          />
+        </View>
+      )}
     </View>
   );
 };

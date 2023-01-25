@@ -9,7 +9,10 @@ import {indicatorColor, useMoment, formatCost} from '../../helpers';
 
 interface Props {
   orderInfo: any;
+  userData: any;
+  currentAccount: any;
   style?: StyleProp<ViewStyle>;
+  route?: any;
 }
 
 const Item = ({
@@ -42,7 +45,7 @@ export const OrderInfo: FunctionComponent<Props> = props => {
     text_Subtitle1,
   } = styles;
 
-  const {orderInfo} = props;
+  const {orderInfo, userData, currentAccount} = props;
 
   return (
     <View style={[orderCard, props.style]}>
@@ -55,7 +58,11 @@ export const OrderInfo: FunctionComponent<Props> = props => {
         <Text style={[text_Body2, {color: indicatorColor(orderInfo.status)}]}>
           {orderInfo.status}
         </Text>
-        <Text style={text_Subtitle1}>{orderInfo.provider.name}</Text>
+        <Text style={text_Subtitle1}>
+          {currentAccount.role === 'user'
+            ? orderInfo.provider.name
+            : userData.name}
+        </Text>
 
         <View style={betweenContainer}>
           <Text style={[text_Body2, {color: Color.secondary_600}]}>

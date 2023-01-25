@@ -29,11 +29,9 @@ export const SplashScreen: FunctionComponent<Props> = props => {
       } else {
         StorageService.INSTANCE.getProfileInfo()
           .then(resp => {
-            if (resp?.role === 'platform') {
-              ApiService.INSTANCE.getUserInfo().then(resp =>
-                saveUserInfo(resp),
-              );
-            }
+            ApiService.INSTANCE.getUserInfo().then(resp => {
+              saveUserInfo(resp);
+            });
 
             saveProfileInfo({data: resp?.data, role: resp?.role});
             navigateAction(ReduxType.MAIN);
@@ -53,7 +51,7 @@ export const SplashScreen: FunctionComponent<Props> = props => {
 
   return (
     <View style={[screen, centerPosition]}>
-      <Text>Что-то пошло не так...</Text>
+      <Text>Что-то пошло не так... </Text>
     </View>
   );
 };

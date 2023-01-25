@@ -24,5 +24,7 @@ export const ApiEndpoints = {
     Url(`/api/v1/products/orders/?provider=${id}`),
 
   GetOrderDetails: (id: string) => Url(`/api/v1/products/orders/${id}?`),
-  // search
+
+  OrderAction: (id: string, action: string) =>
+    Url(`/api/v1/products/orders/${id}/owner_action?action=${action}`),
 } as const;

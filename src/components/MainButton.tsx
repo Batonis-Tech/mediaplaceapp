@@ -8,7 +8,7 @@ import {Color, styles} from '../styles';
 import {touchOpacity} from '../helpers';
 
 interface Props {
-  title: string;
+  title: string | undefined;
   style?: StyleProp<ViewStyle>;
   color?: string;
   focus?: boolean;

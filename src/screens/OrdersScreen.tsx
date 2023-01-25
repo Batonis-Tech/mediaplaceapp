@@ -47,7 +47,7 @@ const OrdersScreen: FunctionComponent<Props> = props => {
         errorResponse();
       })
       .finally(() => setLoading(false));
-  }, [currentAccount.data?.id]);
+  }, [currentAccount.data?.id, props.navigation]);
 
   if (loading) {
     return <SkeletonComponent type="OrdersScreen" />;

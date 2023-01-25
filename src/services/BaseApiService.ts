@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {useTypedSelector} from '../hooks/useTypeSelector';
 import {StorageService} from './StorageService';
 
 export class BaseApiService {
@@ -8,11 +7,8 @@ export class BaseApiService {
   _token?: null;
 
   constructor() {
-    // noinspection JSIgnoredPromiseFromCall
     this.loadAuthToken();
   }
-
-  // token = useTypedSelector(state => state.user.access_token);
 
   loadAuthToken(): Promise<void> {
     return StorageService.INSTANCE.getAuthToken()
@@ -30,12 +26,10 @@ export class BaseApiService {
 
     return await axios
       .post(url, headers)
-      .then(response => {
-        //console.log('post response', response.data);
-        return response.data;
-      })
+      .then(response => response.data)
       .catch(error => {
         console.log('post error', error);
+        return error;
       });
   };
 
@@ -49,10 +43,7 @@ export class BaseApiService {
           Authorization: this._token,
         },
       })
-      .then(response => {
-        //console.log('get response', response.data);
-        return response.data;
-      })
+      .then(response => response.data)
       .catch(error => {
         console.log('get error', error);
         return error;
