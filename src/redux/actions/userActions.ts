@@ -24,3 +24,13 @@ export function getBalance(payload: any) {
 export function getProviders(payload: any) {
   return {type: ReduxType.GET_PROVIDERS, payload};
 }
+
+export function upadateOrder(
+  type:
+    | ReduxType.SAVE_PUBLICATION_URL
+    | ReduxType.SAVE_QUILL_SOLUTION
+    | ReduxType.SAVE_QUILL_TASK,
+  payload: string,
+) {
+  return {type: type, payload};
+}

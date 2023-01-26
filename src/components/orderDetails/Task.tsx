@@ -9,8 +9,8 @@ import {Icon} from '../../utils/Icon';
 import {RightArrow} from '../../assets/IconSvg';
 
 // other deps
-import RenderHtml from 'react-native-render-html';
 import {touchOpacity} from '../../helpers';
+import {WebView} from 'react-native-webview';
 
 interface Props {
   title: string;
@@ -36,7 +36,7 @@ export const Task: FunctionComponent<Props> = props => {
         <Icon iconName={RightArrow} />
       </View>
 
-      <RenderHtml source={source} />
+      <WebView source={source} style={{height: '100%'}} />
     </TouchableOpacity>
   );
 };

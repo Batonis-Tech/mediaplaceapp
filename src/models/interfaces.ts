@@ -36,7 +36,12 @@ export interface AuthState {
     result: any;
   };
   orders: any;
-  orderDetails: any;
+  orderDetails: {
+    id: string;
+    publication_url: string;
+    quill_solution: string;
+    quill_task: string;
+  };
   access_token: string;
   refresh_token: string;
 }

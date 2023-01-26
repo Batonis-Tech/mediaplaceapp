@@ -6,6 +6,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  TextStyle,
 } from 'react-native';
 import {InputProps} from 'react-native-elements';
 
@@ -22,11 +23,13 @@ import {touchOpacity} from '../helpers';
 interface Props extends InputProps {
   value: any;
   style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
   textInput?: StyleProp<InputProps>;
   onChangeText: (arg: any) => void;
   onFocus: () => void;
   reset?: boolean;
   placeholder: string;
+  multiline?: boolean;
   // autoFocus?: boolean;
   autoCorrect?: boolean;
   autoComplete?: string;
@@ -56,6 +59,7 @@ export const InputForm: FunctionComponent<Props> = props => {
           betweenContainer,
           props.errorMessage ? errorContainer : undefined,
           props.style,
+          {justifyContent: 'flex-start'},
         ]}>
         <TextInput
           onFocus={props.onFocus}
@@ -65,11 +69,12 @@ export const InputForm: FunctionComponent<Props> = props => {
           //autoComplete={props.autoComplete}
           textContentType={props.textContentType}
           secureTextEntry={props.textContentType === 'password'}
-          style={[text_Input, root]}
+          style={[text_Input, root, {height: '100%'}, props.textStyle]}
           onChangeText={props.onChangeText}
           value={props.value}
           placeholder={props.placeholder}
           placeholderTextColor={Color.secondary_500}
+          multiline={props.multiline}
           secureTextEntry={
             props.textContentType === 'password' && secureTextEntry
           }

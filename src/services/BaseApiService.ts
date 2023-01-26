@@ -21,11 +21,11 @@ export class BaseApiService {
       });
   }
 
-  post = async (url: string, headers: {}) => {
+  post = async (url: string, body: {}) => {
     console.log('postUrl: ', url);
 
     return await axios
-      .post(url, headers)
+      .post(url, body)
       .then(response => response.data)
       .catch(error => {
         console.log('post error', error);
@@ -36,7 +36,7 @@ export class BaseApiService {
   get = async (url: string) => {
     console.log('getUrl: ', url);
 
-    return await await axios
+    return await axios
       .get(url, {
         headers: {
           Accept: 'application/json',
@@ -46,6 +46,23 @@ export class BaseApiService {
       .then(response => response.data)
       .catch(error => {
         console.log('get error', error);
+        return error;
+      });
+  };
+
+  patch = async (url: string, body: {}) => {
+    console.log('patchUrl: ', url);
+
+    return await axios
+      .patch(url, body, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: this._token,
+        },
+      })
+      .then(response => response.data)
+      .catch(error => {
+        console.log('patch error', error);
         return error;
       });
   };

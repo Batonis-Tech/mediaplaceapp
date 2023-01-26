@@ -66,6 +66,12 @@ export class ApiService {
     );
   }
 
+  getOrderActionUser(id: string, action: string): Promise<void> {
+    return BaseApiService.INSTANCE.get(ApiEndpoints.OrderActionUser(id, action))
+      .then(resp => resp)
+      .catch(error => console.log(error));
+  }
+
   // provider
   getOrdersProvider(id: string): Promise<T> {
     return BaseApiService.INSTANCE.get(ApiEndpoints.GetOrdersProvider(id)).then(
@@ -79,10 +85,19 @@ export class ApiService {
     );
   }
 
-  // general
-  getOrderAction(id: string, action: string): Promise<void> {
-    return BaseApiService.INSTANCE.get(ApiEndpoints.OrderAction(id, action))
+  getOrderActionProvider(id: string, action: string): Promise<void> {
+    return BaseApiService.INSTANCE.get(
+      ApiEndpoints.OrderActionProvider(id, action),
+    )
       .then(resp => resp)
       .catch(error => console.log(error));
+  }
+
+  // orders
+  patchUpdateOrder(id: string, data: any): Promise<void> {
+    return BaseApiService.INSTANCE.patch(
+      ApiEndpoints.ExecutorUpdate(id),
+      data,
+    ).then(resp => resp);
   }
 }

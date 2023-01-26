@@ -77,7 +77,9 @@ export const styles = StyleSheet.create({
   // general
   root: {flex: 1},
   screen: {flex: 1, paddingHorizontal: 16},
+  topDefault: {marginTop: 16},
   bottomDefault: {marginBottom: 16},
+  bottomDefaultWithScroll: {marginBottom: 90},
   paddingDefault: {padding: 16},
   paddingHorizontalDefault: {paddingHorizontal: 16},
   topWithoutHeader: {paddingTop: StatusBar.currentHeight + 16},
@@ -92,6 +94,12 @@ export const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  absoluteButton: {
+    position: 'absolute',
+    bottom: 16,
+    paddingHorizontal: 16,
+    width: '100%',
   },
   buttonOnKeyboard: {
     position: 'absolute',

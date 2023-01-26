@@ -44,7 +44,9 @@ interface Props {
 export const ChangeProfileModal: FunctionComponent<Props> = props => {
   const [loading, setLoading] = useState<boolean>(true);
   const [current, setCurrent] = useState<{}>(null);
+
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
+  const [initialIndex, setInitialIndex] = useState<number>(-1);
 
   const snapPoints = React.useMemo(() => ['CONTENT_HEIGHT'], []);
   const {
@@ -75,14 +77,11 @@ export const ChangeProfileModal: FunctionComponent<Props> = props => {
   } = styles;
 
   const initialCurrentIndex = () => {
-    if (currentAccount.role === 'user') {
-      setCurrentIndex(0);
-    } else {
-      let num = providers?.results.findIndex(
-        (elem: any) => elem.name === currentAccount.data.name,
-      );
-      setCurrentIndex(num + 1);
-    }
+    let num = DATA[0]?.data.findIndex(
+      (elem: any) => elem.name === currentAccount.data.name,
+    );
+    setInitialIndex(num);
+    setCurrentIndex(num);
   };
 
   useEffect(() => {
@@ -91,11 +90,10 @@ export const ChangeProfileModal: FunctionComponent<Props> = props => {
     ApiService.INSTANCE.getProviders()
       .then(resp => {
         getProviders(resp);
-
         initialCurrentIndex();
       })
       .finally(() => setLoading(false));
-  }, [currentAccount.data?.id]);
+  }, [currentAccount?.data?.id]);
 
   const submitChange = () => {
     let role = () => (currentIndex === 0 ? 'user' : 'platform');
@@ -186,8 +184,11 @@ export const ChangeProfileModal: FunctionComponent<Props> = props => {
               <MainButton
                 title="Сменить профиль"
                 onPress={submitChange}
+                disabled={currentIndex === initialIndex}
                 color={
-                  currentIndex !== -1 ? Color.primary_500 : Color.primary_050
+                  currentIndex !== initialIndex
+                    ? Color.primary_500
+                    : Color.primary_050
                 }
               />
             </View>

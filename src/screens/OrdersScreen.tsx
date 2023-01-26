@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, View, Text} from 'react-native';
 
 // styles
 import {styles} from '../styles';
@@ -8,13 +8,18 @@ import {styles} from '../styles';
 import {OrdersCard, SkeletonComponent} from '../components';
 
 //
-import {SearchBar, Text} from 'react-native-elements';
+import {SearchBar} from 'react-native-elements';
+// import {Searchbar} from 'react-native-paper';
 
 // api
 import {useActions} from '../hooks/useAction';
 import {useTypedSelector} from '../hooks/useTypeSelector';
 import {ApiService} from '../services';
 import {AppState} from '../models';
+
+// icons
+import {Icon} from '../utils/Icon';
+import {Close} from '../assets/IconSvg';
 
 interface Props {
   navigation?: any;
@@ -24,6 +29,8 @@ const OrdersScreen: FunctionComponent<Props> = props => {
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>('');
 
+  const [searchQuery, setSearchQuery] = React.useState('');
+
   const {screen, centerPosition, text_Caption1} = styles;
 
   const {orders, currentAccount} = useTypedSelector(
@@ -31,13 +38,29 @@ const OrdersScreen: FunctionComponent<Props> = props => {
   );
   const {getOrders, errorResponse} = useActions();
 
+  const onChangeSearch = query => {
+    console.log(query);
+
+    // console.log(orders);
+
+    const newItem = orders.filter(newVal => {
+      console.log(newVal);
+
+      return Number(newVal.id) === Number(query);
+    });
+    console.log(newItem);
+
+    setSearchQuery(query);
+    //  getOrders(newItem);
+  };
+
   const currentResponse = () => {
     return currentAccount.role === 'user'
       ? ApiService.INSTANCE.getOrdersUser(currentAccount.data?.id)
       : ApiService.INSTANCE.getOrdersProvider(currentAccount.data?.id);
   };
 
-  useEffect(() => {
+  const getData = () => {
     setLoading(true);
 
     currentResponse()
@@ -46,32 +69,68 @@ const OrdersScreen: FunctionComponent<Props> = props => {
         console.log('getOrders error', error);
         errorResponse();
       })
-      .finally(() => setLoading(false));
-  }, [currentAccount.data?.id, props.navigation]);
+      .finally(() => {
+        console.log(orders);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => getData(), [currentAccount.data?.id, props.navigation]);
+
+  useEffect(() => {
+    //props.navigation.setOptions({title: title});
+    // props.navigation.setOptions({
+    //   // headerRight: () => (
+    //   // <SearchBar
+    //   //   placeholder="Type Here..."
+    //   //   onChangeText={onChangeSearch}
+    //   //   value={searchQuery}
+    //   //   platform="android"
+    //   //   // cancelIcon={() => <Text>cansel</Text>}
+    //   // />
+    //   // ),
+    //   //   headerRight: () => <View style={{backgroundColor: 'red', width: 100}} />,
+    // });
+  }, [props.navigation]);
 
   if (loading) {
     return <SkeletonComponent type="OrdersScreen" />;
   }
 
   return orders?.length !== 0 ? (
-    <FlatList
-      data={orders}
-      renderItem={({item}) => (
-        <OrdersCard
-          order={item}
-          role={currentAccount.role}
-          onPress={() => {
-            props.navigation.navigate('OrderDetailsScreen', {
-              order: item,
-            });
-          }}
-          style={{marginBottom: 12}}
-        />
-      )}
-      keyExtractor={item => item.id}
-      showsVerticalScrollIndicator={false}
-      style={screen}
-    />
+    <>
+      {/* <SearchBar
+        placeholder="Type Here..."
+        onChangeText={(text: string) => onChangeSearch(text)}
+        value={searchQuery}
+        platform="android"
+        //  cancelIcon={() => <Icon iconName={Close} />}
+        searchIcon={() => <Icon iconName={Close} />}
+      /> */}
+
+      <FlatList
+        data={orders}
+        renderItem={({item}) => {
+          return (
+            <OrdersCard
+              order={item}
+              role={currentAccount.role}
+              onPress={() => {
+                props.navigation.navigate('OrderDetailsScreen', {
+                  order: item,
+                });
+              }}
+              style={{marginBottom: 12}}
+            />
+          );
+        }}
+        keyExtractor={item => item.id}
+        showsVerticalScrollIndicator={false}
+        style={screen}
+        refreshing={loading}
+        onRefresh={() => getData()}
+      />
+    </>
   ) : (
     <View style={[screen, centerPosition]}>
       <Text style={text_Caption1}>Нет заказов</Text>

@@ -1,4 +1,4 @@
-const API_URI: string = 'http://178.128.253.62/backend';
+const API_URI: string = 'https://mediaplace.batonis.tech/backend';
 
 export const CLIENT_ID = 'HQhhKyRwRuSEhU5NrD9Hfco94ciyNCh1RWWKhiTG';
 export const CLIENT_SECRET =
@@ -25,6 +25,11 @@ export const ApiEndpoints = {
 
   GetOrderDetails: (id: string) => Url(`/api/v1/products/orders/${id}?`),
 
-  OrderAction: (id: string, action: string) =>
+  OrderActionUser: (id: string, action: string) =>
     Url(`/api/v1/products/orders/${id}/owner_action?action=${action}`),
+  OrderActionProvider: (id: string, action: string) =>
+    Url(`/api/v1/products/orders/${id}/executor_action?action=${action}`),
+
+  ExecutorUpdate: (id: string) =>
+    Url(`/api/v1/products/orders/${id}/executor_update`),
 } as const;

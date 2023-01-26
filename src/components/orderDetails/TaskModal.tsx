@@ -1,9 +1,8 @@
 import React, {FunctionComponent, useMemo} from 'react';
-import {StyleProp, View, ViewStyle} from 'react-native';
+import {StatusBar, StyleProp, View, ViewStyle} from 'react-native';
 
 // styles
 import {styles} from '../../styles';
-import {height} from '../../helpers';
 
 // components
 import {HeaderModal} from '../';
@@ -14,10 +13,10 @@ import {
   BottomSheetModal,
   BottomSheetScrollView,
   useBottomSheetDynamicSnapPoints,
-  BottomSheetView,
-  useBottomSheetSpringConfigs,
 } from '@gorhom/bottom-sheet';
 import RenderHtml from 'react-native-render-html';
+import {useAnimatedStyle} from 'react-native-reanimated';
+import {height} from '../../helpers';
 
 interface Props {
   data: {data: {}; title: string};
@@ -27,7 +26,6 @@ interface Props {
 }
 
 export const TaskModal: FunctionComponent<Props> = props => {
-  const initialPoints = useMemo(() => ['80%'], []);
   const snapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
   const {
     animatedHandleHeight,
@@ -36,21 +34,31 @@ export const TaskModal: FunctionComponent<Props> = props => {
     handleContentLayout,
   } = useBottomSheetDynamicSnapPoints(snapPoints);
 
-  const {root, paddingHorizontalDefault} = styles;
+  const {paddingHorizontalDefault} = styles;
 
   const source = {
-    html: props.data?.data,
+    html: props?.data?.data,
   };
+
+  const scrollViewAnimatedStyles = useAnimatedStyle(() => {
+    const contentHeight = animatedContentHeight.value;
+    const handleHeight = animatedHandleHeight.value;
+    const bottomSheetHeight = handleHeight + contentHeight;
+
+    return {
+      height:
+        bottomSheetHeight > height ? height - handleHeight : bottomSheetHeight,
+    };
+  });
 
   return (
     <BottomSheetModal
       ref={props.bottomSheetModalRef}
-      //snapPoints={animatedSnapPoints}
-      //animationConfigs={animationConfigs}
-      snapPoints={initialPoints}
+      snapPoints={animatedSnapPoints}
       handleIndicatorStyle={{height: 0}}
-      // handleHeight={animatedHandleHeight}
-      // contentHeight={animatedContentHeight}
+      handleHeight={animatedHandleHeight}
+      contentHeight={animatedContentHeight}
+      topInset={StatusBar.currentHeight}
       backdropComponent={props => (
         <BottomSheetBackdrop
           {...props}
@@ -58,19 +66,17 @@ export const TaskModal: FunctionComponent<Props> = props => {
           disappearsOnIndex={-1}
         />
       )}>
-      {/* <View onLayout={handleContentLayout}> */}
-      {/* <BottomSheetView onLayout={handleContentLayout}> */}
-      {/* <View style={{minHeight: height * 0.1, maxHeight: height * 0.8}}> */}
       <HeaderModal title={props.data.title} close={props.close} />
 
       <BottomSheetScrollView
-        style={paddingHorizontalDefault}
+        style={[scrollViewAnimatedStyles, paddingHorizontalDefault]}
         showsVerticalScrollIndicator={false}>
-        <RenderHtml source={source} contentWidth={200} />
+        <View onLayout={handleContentLayout}>
+          <RenderHtml source={source} />
+
+          <View style={{height: 50}} />
+        </View>
       </BottomSheetScrollView>
-      {/* </View> */}
-      {/* </BottomSheetView> */}
-      {/* </View> */}
     </BottomSheetModal>
   );
 };

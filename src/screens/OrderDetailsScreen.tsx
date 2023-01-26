@@ -11,7 +11,17 @@ import {Pressable, ScrollView, Text, View} from 'react-native';
 import {Color, styles} from '../styles';
 
 // components
-import {MainButton, OrderInfo, Spinner, Task, TaskModal} from '../components';
+import {
+  MainButton,
+  OrderInfo,
+  Spinner,
+  Task,
+  TaskModal,
+  AddButton,
+  AddPublicationModal,
+  AddPublicationTextModal,
+  LinkButton,
+} from '../components';
 
 // api
 import {useTypedSelector} from '../hooks/useTypeSelector';
@@ -19,7 +29,7 @@ import {ApiService} from '../services';
 import {useActions} from '../hooks/useAction';
 
 // other deps
-import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import BottomSheet, {BottomSheetModal} from '@gorhom/bottom-sheet';
 
 // icons
 import {Chat} from '../assets/IconSvg';
@@ -36,22 +46,31 @@ const OrderDetailsScreen: FunctionComponent<Props> = props => {
     data: {},
     title: '',
   });
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  // refs
+  const taskModalRef = useRef<BottomSheetModal>(null);
+  const addPublicationModalRef = useRef<BottomSheetModal>(null);
+  const addPublicationTextModalRef = useRef<BottomSheetModal>(null);
 
   const {orderDetails, currentAccount, userData} = useTypedSelector(
     state => state.user,
   );
   const {getOrderDetails} = useActions();
 
-  const {root, screen, bottomDefault, buttonOnKeyboard} = styles;
+  const {
+    root,
+    screen,
+    bottomDefault,
+    absoluteButton,
+    topDefault,
+    bottomDefaultWithScroll,
+  } = styles;
 
-  const handlePresentModal = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-
-  const handleCloseModal = useCallback(() => {
-    bottomSheetModalRef.current?.close();
-  }, []);
+  const currentResponse = (id: string, action: string) => {
+    return currentAccount.role === 'user'
+      ? ApiService.INSTANCE.getOrderActionUser(id, action)
+      : ApiService.INSTANCE.getOrderActionProvider(id, action);
+  };
 
   const getOrderInfo = () => {
     ApiService.INSTANCE.openOrder(props.route.params.order.id).then(resp => {
@@ -62,7 +81,7 @@ const OrderDetailsScreen: FunctionComponent<Props> = props => {
 
   useEffect(() => {
     getOrderInfo();
-  }, []);
+  }, [props.navigation]);
 
   useEffect(() => {
     props.navigation.setOptions({
@@ -119,7 +138,7 @@ const OrderDetailsScreen: FunctionComponent<Props> = props => {
       btn === 'general' ? choise()?.generalAction : choise()?.minorAction;
 
     setLoading(true);
-    ApiService.INSTANCE.getOrderAction(orderDetails.id, action())
+    currentResponse(orderDetails.id, action())
       .then(() => getOrderInfo())
       .catch(error => console.log(error));
   };
@@ -130,75 +149,109 @@ const OrderDetailsScreen: FunctionComponent<Props> = props => {
 
   return (
     <View style={root}>
-      <ScrollView
-        style={[screen, bottomDefault, root]}
-        showsVerticalScrollIndicator={false}>
-        <OrderInfo
-          orderInfo={orderDetails}
-          currentAccount={currentAccount}
-          userData={userData}
-        />
-
-        {orderDetails.status === 'Ожидает публикации' &&
-          currentAccount.role === 'platform' && <Text>публикация</Text>}
-
-        {orderDetails?.quill_solution && (
-          <Task
-            title="Текст публикации"
-            data={orderDetails?.quill_solution}
-            style={{marginTop: 16}}
-            onPress={() => {
-              setDataModal(prevState => ({
-                ...prevState,
-                data: orderDetails?.quill_solution,
-                title: 'Текст публикации',
-              }));
-              handlePresentModal();
-            }}
+      <ScrollView style={[screen, root]} showsVerticalScrollIndicator={false}>
+        <View style={bottomDefaultWithScroll}>
+          <OrderInfo
+            orderInfo={orderDetails}
+            currentAccount={currentAccount}
+            userData={userData}
           />
-        )}
 
-        {orderDetails?.quill_task && (
-          <Task
-            title="Задание"
-            data={orderDetails?.quill_task}
-            style={{marginTop: 16}}
-            onPress={() => {
-              setDataModal(prevState => ({
-                ...prevState,
-                data: orderDetails?.quill_task,
-                title: 'Задание',
-              }));
-              handlePresentModal();
-            }}
-          />
-        )}
+          {orderDetails.status === 'Ожидает публикации' &&
+            currentAccount.role === 'platform' && (
+              <AddButton
+                title="Публикация"
+                style={topDefault}
+                onPress={() => addPublicationModalRef.current?.present()}
+              />
+            )}
 
-        {!!choise()?.general && (
-          <MainButton
-            title={choise()?.general}
-            style={{marginTop: 16}}
-            onPress={() => orderAction('general')}
-          />
-        )}
+          {orderDetails.status === 'Принят в работу' &&
+            !orderDetails?.quill_solution &&
+            currentAccount.role === 'platform' && (
+              <AddButton
+                title="Текст публикации"
+                style={topDefault}
+                onPress={() => addPublicationTextModalRef.current?.present()}
+              />
+            )}
 
-        <TaskModal
-          bottomSheetModalRef={bottomSheetModalRef}
-          close={handleCloseModal}
-          data={dataModal}
-        />
+          {orderDetails?.publication_url && (
+            <LinkButton
+              link={orderDetails?.publication_url}
+              style={topDefault}
+            />
+          )}
+
+          {orderDetails?.quill_solution && (
+            <Task
+              title="Текст публикации"
+              data={orderDetails?.quill_solution}
+              style={topDefault}
+              onPress={() => {
+                setDataModal(prevState => ({
+                  ...prevState,
+                  data: orderDetails?.quill_solution,
+                  title: 'Текст публикации',
+                }));
+                taskModalRef.current?.present();
+              }}
+            />
+          )}
+
+          {orderDetails?.quill_task && (
+            <Task
+              title="Задание"
+              data={orderDetails?.quill_task}
+              style={topDefault}
+              onPress={() => {
+                setDataModal(prevState => ({
+                  ...prevState,
+                  data: orderDetails?.quill_task,
+                  title: 'Задание',
+                }));
+                taskModalRef.current?.present();
+              }}
+            />
+          )}
+
+          {!!choise()?.general && (
+            <MainButton
+              title={choise()?.general}
+              style={{marginTop: 16}}
+              onPress={() => orderAction('general')}
+            />
+          )}
+        </View>
       </ScrollView>
 
       {!!choise()?.minor && (
-        <View style={buttonOnKeyboard}>
+        <View style={absoluteButton}>
           <MainButton
             title={choise()?.minor}
             onPress={() => orderAction('minor')}
             color={Color.primary_500}
-            focus={true}
           />
         </View>
       )}
+
+      <TaskModal
+        bottomSheetModalRef={taskModalRef}
+        close={() => taskModalRef.current?.close()}
+        data={dataModal}
+      />
+
+      <AddPublicationTextModal
+        bottomSheetModalRef={addPublicationTextModalRef}
+        close={() => addPublicationTextModalRef.current?.close()}
+        refresh={() => getOrderInfo()}
+      />
+
+      <AddPublicationModal
+        bottomSheetModalRef={addPublicationModalRef}
+        close={() => addPublicationModalRef.current?.close()}
+        refresh={() => getOrderInfo()}
+      />
     </View>
   );
 };

@@ -45,7 +45,7 @@ export const OrderInfo: FunctionComponent<Props> = props => {
     text_Subtitle1,
   } = styles;
 
-  const {orderInfo, userData, currentAccount} = props;
+  const {orderInfo, currentAccount} = props;
 
   return (
     <View style={[orderCard, props.style]}>
@@ -61,7 +61,7 @@ export const OrderInfo: FunctionComponent<Props> = props => {
         <Text style={text_Subtitle1}>
           {currentAccount.role === 'user'
             ? orderInfo.provider.name
-            : userData.name}
+            : orderInfo.user.name}
         </Text>
 
         <View style={betweenContainer}>
